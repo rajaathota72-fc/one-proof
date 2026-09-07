@@ -37,11 +37,11 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 640px;
+      max-width: 400px;
       margin: 0 auto;
-      padding: 22px 20px 0;
+      padding: 16px 16px 0;
     }
-    .logo { display: inline-flex; align-items: center; gap: 9px; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 800; letter-spacing: -0.5px; }
     .logo .dot {
       width: 10px; height: 10px; border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -49,13 +49,13 @@
     }
 
     .wallet-btn {
-      display: flex; align-items: center; gap: 8px;
-      padding: 9px 16px;
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 13px;
       border-radius: 999px;
       border: 1px solid var(--border);
       background: var(--panel);
       color: var(--text);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: border-color .15s, transform .1s;
@@ -67,34 +67,34 @@
     .wallet-btn img { width: 16px; height: 16px; }
 
     /* ---------- hero / wrap ---------- */
-    .wrap { width: 100%; max-width: 560px; margin: 0 auto; padding: 36px 20px 48px; }
-    header { text-align: center; margin-bottom: 30px; }
+    .wrap { width: 100%; max-width: 400px; margin: 0 auto; padding: 22px 16px 32px; }
+    header { text-align: center; margin-bottom: 20px; }
     header h1 {
-      font-size: 34px;
+      font-size: 24px;
       font-weight: 800;
-      letter-spacing: -1px;
+      letter-spacing: -.7px;
       margin: 0;
       background: linear-gradient(135deg, #fff 30%, #b6aeff 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    header p { color: var(--muted); margin-top: 10px; font-size: 14.5px; }
+    header p { color: var(--muted); margin-top: 7px; font-size: 12.5px; }
     .pipeline-tags {
-      display: flex; justify-content: center; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+      display: flex; justify-content: center; gap: 6px; margin-top: 12px; flex-wrap: wrap;
     }
     .ptag {
-      font-size: 11.5px; font-weight: 600; color: var(--muted);
+      font-size: 10.5px; font-weight: 600; color: var(--muted);
       background: var(--panel2); border: 1px solid var(--border);
-      padding: 5px 11px; border-radius: 999px;
+      padding: 4px 9px; border-radius: 999px;
     }
     .ptag b { color: var(--accent2); font-weight: 700; }
 
     .card {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px;
+      border-radius: 18px;
+      padding: 20px;
       box-shadow: 0 25px 70px -25px rgba(0,0,0,.7);
       position: relative;
     }
@@ -116,19 +116,19 @@
     /* ---------- wallet gate ---------- */
     .wallet-gate {
       text-align: center;
-      padding: 30px 16px;
+      padding: 20px 12px;
       color: var(--muted);
-      font-size: 13.5px;
+      font-size: 12.5px;
     }
-    .wallet-gate .fox { font-size: 34px; margin-bottom: 10px; }
+    .wallet-gate .fox { font-size: 28px; margin-bottom: 8px; }
     .wallet-gate button {
-      margin-top: 16px;
-      padding: 13px 28px;
+      margin-top: 14px;
+      padding: 11px 24px;
       border: none;
       border-radius: 10px;
       background: linear-gradient(135deg, #f6851b, #e2761b);
       color: white;
-      font-size: 14.5px;
+      font-size: 13.5px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex; align-items: center; gap: 8px;
@@ -138,8 +138,8 @@
     /* ---------- upload form ---------- */
     .drop {
       border: 1.5px dashed var(--border);
-      border-radius: 16px;
-      padding: 36px 16px;
+      border-radius: 14px;
+      padding: 24px 14px;
       text-align: center;
       color: var(--muted);
       cursor: pointer;
@@ -147,40 +147,40 @@
     }
     .drop:hover, .drop.dragover { border-color: var(--accent); background: rgba(109,94,248,.05); }
     .drop input { display: none; }
-    .drop .icon { font-size: 28px; margin-bottom: 6px; opacity: .8; }
-    .drop .filename { margin-top: 8px; color: var(--text); font-size: 13px; }
-    .drop .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .drop .icon { font-size: 22px; margin-bottom: 4px; opacity: .8; }
+    .drop .filename { margin-top: 6px; color: var(--text); font-size: 12px; }
+    .drop .hint { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
     .preview-thumb {
       display: none;
-      max-width: 150px;
-      max-height: 150px;
-      border-radius: 12px;
-      margin: 0 auto 10px;
+      max-width: 100px;
+      max-height: 100px;
+      border-radius: 10px;
+      margin: 0 auto 8px;
       border: 1px solid var(--border);
     }
 
     .connected-strip {
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 18px;
-      padding: 10px 14px;
+      margin-bottom: 14px;
+      padding: 9px 13px;
       background: var(--panel2);
       border: 1px solid var(--border);
       border-radius: 10px;
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--muted);
     }
     .connected-strip .addr { color: var(--accent2); font-family: ui-monospace, monospace; }
 
     button.primary {
       width: 100%;
-      margin-top: 16px;
-      padding: 14px;
+      margin-top: 12px;
+      padding: 12px;
       border: none;
       border-radius: 12px;
       background: linear-gradient(135deg, var(--accent), var(--accent-b));
       color: white;
-      font-size: 15px;
+      font-size: 13.5px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -219,27 +219,27 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ---------- progress ---------- */
-    #progress { margin-top: 22px; display: none; flex-direction: column; gap: 10px; }
+    #progress { margin-top: 16px; display: none; flex-direction: column; gap: 8px; }
     .p-step {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 13px 15px;
-      border-radius: 12px;
+      gap: 10px;
+      padding: 10px 13px;
+      border-radius: 10px;
       background: var(--panel2);
       border: 1px solid var(--border);
       opacity: .4;
       transition: opacity .2s, border-color .2s, background .2s;
-      font-size: 13.5px;
+      font-size: 12px;
     }
     .p-step.active { opacity: 1; border-color: rgba(109,94,248,.45); background: rgba(109,94,248,.06); }
     .p-step.done { opacity: 1; border-color: rgba(41,208,160,.35); }
     .p-icon {
-      width: 22px; height: 22px;
+      width: 19px; height: 19px;
       flex-shrink: 0;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px;
+      font-size: 10px;
       background: #20232d;
       color: var(--muted);
     }
@@ -252,81 +252,97 @@
     .result-title {
       text-align: center;
       color: var(--accent2);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      margin: 4px 0 18px;
+      margin: 2px 0 14px;
       letter-spacing: .03em;
     }
 
-    .badge-card {
-      background: linear-gradient(160deg, #201a3d 0%, #0f1117 65%);
-      border: 1px solid rgba(109,94,248,.4);
-      border-radius: 18px;
-      padding: 24px;
-      display: flex;
-      gap: 16px;
-      align-items: center;
+    /* NFT card: square art on top, info below, like a real mint card */
+    .nft-card {
       position: relative;
+      border-radius: 18px;
+      padding: 3px;
+      background: linear-gradient(140deg, var(--accent), var(--accent2), var(--accent));
+      background-size: 200% 200%;
+      animation: sheen 5s ease infinite;
+    }
+    @keyframes sheen { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+    .nft-inner {
+      background: #0c0e14;
+      border-radius: 15px;
       overflow: hidden;
     }
-    .badge-card::after {
-      content: "";
-      position: absolute; inset: 0;
-      background: radial-gradient(circle at 100% 0%, rgba(109,94,248,.3), transparent 55%);
-      pointer-events: none;
+    .nft-art {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      background: #000;
     }
-    .badge-card::before {
-      content: "SOULBOUND";
-      position: absolute; top: 12px; right: -30px;
+    .nft-art img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .nft-ribbon {
+      position: absolute; top: 10px; right: -26px;
       background: var(--accent2);
       color: #06231b;
       font-size: 9px;
       font-weight: 800;
       letter-spacing: .08em;
-      padding: 3px 34px;
+      padding: 3px 30px;
       transform: rotate(35deg);
     }
-    .badge-card img {
-      width: 76px; height: 76px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--accent2);
-      flex-shrink: 0;
-      box-shadow: 0 0 0 4px rgba(41,208,160,.12);
+    .nft-chain {
+      position: absolute; bottom: 8px; left: 8px;
+      display: flex; align-items: center; gap: 4px;
+      background: rgba(8,9,13,.75);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--warn);
     }
-    .badge-card .bname { font-size: 16.5px; font-weight: 800; }
-    .badge-card .bsub { font-size: 12px; color: var(--muted); margin-top: 3px; }
-    .badge-card .bverified {
+    .nft-chain .cdot { width: 5px; height: 5px; border-radius: 50%; background: var(--warn); }
+
+    .nft-info { padding: 14px 16px 16px; }
+    .nft-info .bname { font-size: 15px; font-weight: 800; }
+    .nft-info .bsub { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+    .nft-info .bverified {
       display: inline-flex; align-items: center; gap: 5px;
       margin-top: 9px;
-      padding: 4px 11px;
+      padding: 4px 10px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       background: rgba(41,208,160,.15);
       color: var(--accent2);
     }
 
     .details {
-      margin-top: 18px;
+      margin-top: 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     .detail {
-      padding: 13px 15px;
+      padding: 11px 13px;
       background: var(--panel2);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
     }
-    .detail .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; display: flex; justify-content: space-between; align-items: center; }
-    .detail .value { font-size: 13.5px; margin-top: 5px; word-break: break-all; }
+    .detail .label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; display: flex; justify-content: space-between; align-items: center; }
+    .detail .value { font-size: 12.5px; margin-top: 4px; word-break: break-all; }
     .detail .value a { color: var(--accent2); text-decoration: none; }
     .detail .value a:hover { text-decoration: underline; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; }
     .copy-btn {
       background: none; border: none; color: var(--muted);
-      font-size: 11px; cursor: pointer; padding: 0;
+      font-size: 10.5px; cursor: pointer; padding: 0;
     }
     .copy-btn:hover { color: var(--accent2); }
 
@@ -421,12 +437,18 @@
         <div id="result">
           <div class="result-title">✓ Pipeline complete</div>
 
-          <div class="badge-card">
-            <img id="resultImg" alt="scanned face">
-            <div>
-              <div class="bname">Proof of Human <span id="tokenId"></span></div>
-              <div class="bsub">Non-transferable · owned by <span id="walletShort" class="mono"></span></div>
-              <div class="bverified" id="verifiedPill"></div>
+          <div class="nft-card">
+            <div class="nft-inner">
+              <div class="nft-art">
+                <img id="resultImg" alt="scanned face">
+                <div class="nft-ribbon">SOULBOUND</div>
+                <div class="nft-chain"><span class="cdot"></span>Sepolia</div>
+              </div>
+              <div class="nft-info">
+                <div class="bname">Proof of Human <span id="tokenId"></span></div>
+                <div class="bsub">Non-transferable · owned by <span id="walletShort" class="mono"></span></div>
+                <div class="bverified" id="verifiedPill"></div>
+              </div>
             </div>
           </div>
 
