@@ -1,9 +1,5 @@
-"""
-End-to-end pipeline:
-  face scan -> web/social search -> blockchain upload + re-verification
-
-Usage:
-    python main.py sample_images/input.jpg
+"""Pipeline: face scan -> web search -> blockchain upload + re-verify.
+Usage: python main.py sample_images/input.jpg
 """
 import sys
 from dotenv import load_dotenv

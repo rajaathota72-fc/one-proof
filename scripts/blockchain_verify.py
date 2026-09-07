@@ -1,10 +1,5 @@
-"""
-Step 3: Blockchain upload + re-verification.
-
-Connects via web3.py to an EVM chain (default: local Ganache/Hardhat node,
-or a public testnet like Sepolia if RPC_URL/PRIVATE_KEY point there),
-uploads sha256 hashes of the face encoding + matched post to the
-Verification contract, then re-reads them back to prove tamper-evidence.
+"""Step 3: upload sha256 hashes (face + matched post) to Verification contract,
+then re-read on-chain to confirm no tampering. RPC_URL defaults to local Ganache.
 """
 import os
 import json

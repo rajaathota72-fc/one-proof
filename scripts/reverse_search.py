@@ -1,12 +1,7 @@
-"""
-Step 2: Reverse image / web search to find a matching social media post.
+"""Step 2: reverse image search via SerpApi Google Lens. Needs SERPAPI_KEY env var.
 
-Uses SerpApi's Google Lens engine (https://serpapi.com/google-lens-api) for a
-genuine reverse-image search against the live web — not a hardcoded result.
-Requires SERPAPI_KEY env var (free tier available at serpapi.com).
-
-Swap `search_image` for Bing Visual Search / PimEyes API if preferred; the
-pipeline only needs a dict back with {url, title, snippet}.
+Swap search_image() for another provider (Bing Visual Search, PimEyes) if needed —
+pipeline just needs back a list of {url, title, snippet} dicts.
 """
 import os
 import sys
@@ -20,16 +15,11 @@ def search_image(image_path: str) -> list[dict]:
     if not api_key:
         raise EnvironmentError("Set SERPAPI_KEY env var (get one at serpapi.com)")
 
-    # SerpApi Google Lens needs a public image URL, not a local file.
-    # Simplest free path: upload to a temp image host first, or host the
-    # image yourself and pass that URL in. Here we accept an already-public
-    # URL via IMAGE_PUBLIC_URL, falling back to explaining the requirement.
+    # Google Lens needs a public image URL, not a local file path.
     image_url = os.environ.get("IMAGE_PUBLIC_URL")
     if not image_url:
         raise EnvironmentError(
-            "SerpApi Google Lens requires a public image URL. "
-            "Upload sample_images/<file> somewhere public (e.g. imgur, a gist, "
-            "S3 bucket) and set IMAGE_PUBLIC_URL to it."
+            "Set IMAGE_PUBLIC_URL — a public URL of the image (upload it anywhere public first)"
         )
 
     params = {

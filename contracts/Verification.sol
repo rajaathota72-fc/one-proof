@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-/// @title Verification
-/// @notice Stores tamper-evident records for face-match findings (image hash + source post hash + metadata).
+/// @notice Stores face-match records: face hash + matched post hash + url.
 contract Verification {
     struct Record {
         bytes32 faceHash;      // hash of the encoded face vector / input image
@@ -44,7 +43,7 @@ contract Verification {
         return records.length;
     }
 
-    /// @notice Re-verify: check whether given (faceHash, postHash) matches what's on-chain for id.
+    /// @notice Check (faceHash, postHash) matches on-chain record for id.
     function verify(uint256 id, bytes32 faceHash, bytes32 postHash) external view returns (bool) {
         Record storage r = records[id];
         return r.faceHash == faceHash && r.postHash == postHash;

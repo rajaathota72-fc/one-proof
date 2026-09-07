@@ -1,9 +1,4 @@
-"""
-Compiles contracts/Verification.sol with py-solc-x and writes ABI + bytecode
-to build/Verification.abi.json and build/Verification.bin.
-
-Run once before deploy_contract.py.
-"""
+"""Compiles contracts/Verification.sol, writes ABI + bytecode to build/. Run before deploy_contract.py."""
 import json
 import os
 import solcx

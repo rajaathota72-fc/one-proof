@@ -1,9 +1,4 @@
-"""
-Step 1: Face detection + encoding from an input image.
-
-Uses `face_recognition` (dlib-based). Encodes the face into a 128-d vector
-used later as a fingerprint (hashed before going on-chain, never stored raw).
-"""
+"""Step 1: detect + encode face from image. Encoding hashed before going on-chain."""
 import sys
 import hashlib
 import numpy as np
@@ -20,7 +15,7 @@ def encode_face(image_path: str) -> np.ndarray:
 
 
 def face_hash(encoding: np.ndarray) -> str:
-    """Deterministic hash of the face encoding, for on-chain storage."""
+    """Deterministic hash of the face encoding."""
     rounded = np.round(encoding, 4)  # tolerate float noise
     return hashlib.sha256(rounded.tobytes()).hexdigest()
 

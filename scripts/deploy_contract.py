@@ -1,8 +1,4 @@
-"""
-Deploys the compiled Verification contract to the chain at RPC_URL,
-using the account from PRIVATE_KEY. Prints the deployed address —
-set that as CONTRACT_ADDRESS for the rest of the pipeline.
-"""
+"""Deploys compiled Verification contract to RPC_URL using PRIVATE_KEY. Prints address — set as CONTRACT_ADDRESS."""
 import json
 import os
 from web3 import Web3
