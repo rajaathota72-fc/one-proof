@@ -2,24 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Verifai — Proof of Human</title>
+  <title>OneProof — Proof of Human</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="/static/oneproof-mark.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400..800&family=Funnel+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --paper: #FAF7F6;
-      --paper2: #FFFFFF;
-      --paper3: #F1EDEB;
-      --ink: #161616;
-      --ink2: #1C1C1C;
-      --muted: #585858;
-      --muted2: #838383;
-      --line: #E0DDDB;
-      --accent: #9F8BE7;
-      --accent-ink: #161616;
-      --lime: #DDF160;
+      --paper: #f5f5ef;
+      --paper2: #ffffff;
+      --paper3: #e9ebe4;
+      --ink: #111312;
+      --ink2: #1b1e1b;
+      --muted: #5d625d;
+      --muted2: #858b84;
+      --line: #d7dbd3;
+      --accent: #ee5b32;
+      --accent-ink: #111312;
+      --lime: #d5f663;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -27,17 +28,17 @@
       margin: 0;
       background: var(--paper);
       color: var(--ink);
-      font-family: "Funnel Sans", sans-serif;
+      font-family: "Manrope", sans-serif;
     }
-    h1, h2, h3, h4, .accent-font { font-family: "Funnel Display", sans-serif; }
+    h1, h2, h3, h4, .accent-font { font-family: "Space Grotesk", sans-serif; }
     a { color: inherit; }
-    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+    .mono { font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
 
     /* ---------- header ---------- */
     header.site {
       display: flex; align-items: center; justify-content: space-between;
-      max-width: 1000px; margin: 0 auto; padding: 28px 24px 0;
+      max-width: 1240px; margin: 0 auto; padding: 22px 32px 0;
     }
     .logo { display: inline-flex; align-items: center; gap: 9px; font-size: 18px; font-weight: 700; letter-spacing: -.3px; }
     .logo .mark {
@@ -46,7 +47,7 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 13px; font-weight: 800;
     }
-    .header-links { display: flex; align-items: center; gap: 26px; font-size: 14px; color: var(--muted); }
+    .header-links { display: flex; align-items: center; gap: 28px; font-size: 13px; font-weight:600; color: var(--muted); }
     .header-links a { position: relative; padding-bottom: 2px; }
     .header-links a::after {
       content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px;
@@ -57,7 +58,7 @@
 
     /* pill buttons with a fill that slides up from the bottom on hover */
     .btn-pill {
-      height: 46px; padding: 0 22px; border-radius: 999px;
+      height:46px; padding:0 22px; border-radius:4px;
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 14px; font-weight: 600; text-decoration: none;
       border: 1.5px solid var(--ink); color: var(--ink);
@@ -78,7 +79,7 @@
     .btn-pill.accent:hover { color: var(--accent-ink); }
 
     /* ---------- hero ---------- */
-    .hero { max-width: 1000px; margin: 0 auto; padding: 80px 24px 0; }
+    .hero { max-width: 1240px; margin: 0 auto; padding: 68px 32px 0; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(390px,.85fr); gap:56px; align-items:center; }
     .kicker {
       display: inline-flex; align-items: center; gap: 7px;
       font-size: 12.5px; font-weight: 600; color: var(--muted);
@@ -88,12 +89,12 @@
     .kicker .kdot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
     .hero h1 {
       font-weight: 700; letter-spacing: -2.5px; line-height: .98; margin: 0;
-      font-size: clamp(46px, 8vw, 96px);
+      font-size: clamp(54px, 6.4vw, 92px);
     }
     .hero h1 .row { display: block; }
     .hero h1 .accent { color: var(--accent); }
     .hero .sub {
-      margin-top: 30px; font-size: 18px; color: var(--muted); max-width: 520px; line-height: 1.6;
+      margin-top: 30px; font-size: 18px; color: var(--muted); max-width: 560px; line-height: 1.6;
     }
     .hero-ctas { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
     .btn-lg {
@@ -104,7 +105,7 @@
     /* bottom hero data row */
     .hero-data {
       display: flex; align-items: center; gap: 22px;
-      margin-top: 64px; padding-top: 26px; border-top: 1px dashed var(--line);
+      margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--line);
       flex-wrap: wrap;
     }
     .rot-badge { position: relative; width: 74px; height: 74px; flex-shrink: 0; }
@@ -131,7 +132,7 @@
 
     /* ---------- marquee ---------- */
     .marquee-wrap {
-      margin-top: 56px; overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      margin-top: 52px; overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
       background: var(--paper3);
     }
     .marquee-track { display: flex; width: max-content; animation: marquee 26s linear infinite; }
@@ -146,10 +147,10 @@
 
     /* ---------- sections ---------- */
     /* split label-column layout: eyebrow pinned left, heading+copy right (their "name + manifest" grid) */
-    section { padding: 90px 24px; border-top: 1px solid var(--line); }
+    section { padding: 76px 32px; border-top: 1px solid var(--line); }
     section:first-of-type { border-top: none; }
     .section-head {
-      display: grid; grid-template-columns: 200px 1fr; gap: 24px;
+      display: grid; grid-template-columns: 230px 1fr; gap: 24px;
       margin-bottom: 44px; align-items: start;
     }
     .section-head .eyebrow {
@@ -167,8 +168,8 @@
 
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .uc-card {
-      background: var(--paper2); border: 1px solid var(--line); border-radius: 20px;
-      padding: 26px; transition: border-color .2s, transform .15s, box-shadow .2s;
+      background: var(--paper2); border: 1px solid var(--line); border-radius: 4px;
+      padding: 30px; transition: border-color .2s, transform .15s, box-shadow .2s;
     }
     .uc-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 16px 30px -18px rgba(159,139,231,.5); }
     .uc-card .icon {
@@ -182,7 +183,7 @@
     .uc-card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0; }
 
     /* how it works: numbered timeline with a connecting rail */
-    .steps-detail { position: relative; max-width: 680px; }
+    .steps-detail { position: relative; max-width:680px; margin-left:254px; }
     .steps-detail::before {
       content: ""; position: absolute; left: 17px; top: 18px; bottom: 18px; width: 1px;
       background: repeating-linear-gradient(var(--line) 0 4px, transparent 4px 9px);
@@ -229,30 +230,66 @@
     }
 
     .cta-band {
-      text-align: center; padding: 70px 24px; margin: 10px auto 0; max-width: 1000px;
+      padding: 54px; margin: 10px auto 0; max-width:1240px;
       background: var(--ink); color: var(--paper);
-      border-radius: 28px;
+      border-radius: 4px;
     }
-    .cta-band h2 { font-size: clamp(26px, 4vw, 34px); font-weight: 700; margin: 0 0 12px; letter-spacing: -.8px; }
-    .cta-band p { color: #ACACAC; margin: 0 0 28px; font-size: 15px; }
+    .cta-layout { display:grid; grid-template-columns:1fr auto; gap:40px; align-items:end; }
+    .cta-kicker { display:block; margin-bottom:16px; color:var(--lime); font-family:"DM Mono",monospace; font-size:10px; font-weight:500; letter-spacing:.12em; }
+    .cta-band h2 { font-size:clamp(34px,4vw,54px); line-height:.98; font-weight:700; margin:0 0 16px; letter-spacing:-.07em; max-width:560px; }
+    .cta-band p { color:#b9c0b8; margin:0; font-size:15px; max-width:470px; }
     .cta-band .btn-pill { border-color: var(--lime); }
     .cta-band .btn-pill.filled { background: var(--lime); color: var(--ink); border-color: var(--lime); }
     .cta-band .btn-pill.filled:hover { background: #cbe14e; }
+    .cta-actions { display:flex; flex-direction:column; align-items:flex-end; gap:18px; }
+    .cta-steps { display:flex; gap:8px; }
+    .cta-steps span { width:28px; height:28px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.35); color:var(--paper); border-radius:50%; font-family:"DM Mono",monospace; font-size:10px; }
 
-    footer.site {
-      text-align: center; padding: 40px 24px 52px; color: var(--muted2); font-size: 12.5px;
+    footer.site { max-width:1240px; margin:72px auto 0; padding:28px 32px 34px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; letter-spacing:.03em; }
+    .footer-top { display:flex; justify-content:space-between; gap:24px; align-items:flex-start; padding-bottom:28px; }
+    .footer-brand { color:var(--ink); font-family:"Space Grotesk",sans-serif; font-size:18px; font-weight:700; letter-spacing:-.04em; }
+    .footer-brand span { display:inline-grid; place-items:center; width:22px; height:22px; margin-right:7px; border-radius:6px; background:var(--ink); color:var(--lime); font-family:"DM Mono",monospace; font-size:11px; vertical-align:2px; }
+    .footer-note { max-width:310px; margin:8px 0 0; font-family:"Manrope",sans-serif; font-size:12px; line-height:1.55; letter-spacing:0; }
+    .footer-links { display:flex; gap:20px; font-family:"Manrope",sans-serif; font-size:12px; font-weight:600; letter-spacing:0; }
+    .footer-links a { text-decoration:none; }
+    .footer-bottom { display:flex; justify-content:space-between; gap:14px; padding-top:18px; border-top:1px solid var(--line); }
+
+    .signal-board { position:relative; min-height:510px; border:1px solid var(--ink); background:var(--ink); color:var(--paper); overflow:hidden; padding:26px; }
+    .signal-board::before { content:""; position:absolute; width:430px; height:430px; border-radius:50%; right:-120px; top:-150px; background:var(--accent); filter:blur(1px); opacity:.98; }
+    .signal-board::after { content:""; position:absolute; width:310px; height:310px; border-radius:50%; left:-155px; bottom:-145px; border:1px solid rgba(255,255,255,.35); }
+    .signal-top { position:relative; z-index:1; display:flex; justify-content:space-between; align-items:center; text-transform:uppercase; font-size:10px; letter-spacing:.13em; font-weight:700; }
+    .signal-live { display:inline-flex; align-items:center; gap:7px; }
+    .signal-live b { width:7px; height:7px; border-radius:50%; background:var(--lime); box-shadow:0 0 0 5px rgba(213,246,99,.16); }
+    .signal-core { position:absolute; z-index:1; left:26px; right:26px; bottom:26px; padding:22px; border:1px solid rgba(255,255,255,.25); background:rgba(17,19,18,.82); backdrop-filter:blur(14px); }
+    .signal-core h3 { margin:0 0 10px; font-size:28px; letter-spacing:-.06em; }
+    .signal-core p { margin:0; font-size:13px; line-height:1.55; color:#c5cac3; max-width:370px; }
+    .signal-lines { position:absolute; z-index:1; top:124px; left:26px; right:26px; display:grid; gap:10px; }
+    .signal-line { display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; padding:12px 0; border-top:1px solid rgba(255,255,255,.25); color:#e9ece6; font-size:12px; }
+    .signal-line:last-child { border-bottom:1px solid rgba(255,255,255,.25); }
+    .signal-line i { width:22px; height:22px; display:grid; place-items:center; border-radius:50%; background:var(--lime); color:var(--ink); font-style:normal; font-size:10px; font-weight:800; }
+    .signal-line em { font-style:normal; font-family:ui-monospace,monospace; color:var(--lime); font-size:10px; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns:1fr; gap:36px; padding-top:54px; }
+      .signal-board { min-height:400px; }
+      .steps-detail { margin-left:0; }
     }
-
     @media (max-width: 760px) {
+      .container, header.site, .hero { padding-left:22px; padding-right:22px; }
+      section { padding:58px 22px; }
       .header-links { display: none; }
       .grid { grid-template-columns: 1fr; }
       .hero-data .pipe { margin-left: 0; }
+      .cta-band { padding:34px 26px; }
+      .cta-layout { grid-template-columns:1fr; gap:28px; }
+      .cta-actions { align-items:flex-start; }
+      footer.site { margin-top:52px; padding:24px 22px; }
+      .footer-top,.footer-bottom { flex-direction:column; }
     }
   </style>
 </head>
 <body>
   <header class="site">
-    <div class="logo"><span class="mark">V</span>Verifai</div>
+    <div class="logo"><span class="mark">1</span>OneProof</div>
     <div class="header-links">
       <a href="#usecases">Use cases</a>
       <a href="#how">How it works</a>
@@ -262,13 +299,14 @@
   </header>
 
   <div class="hero">
+    <div class="hero-copy">
     <div class="kicker"><span class="kdot"></span>Soulbound NFT · Sepolia Testnet</div>
     <h1>
       <span class="row">Meet the</span>
       <span class="row accent">Proof-of-Human</span>
       <span class="row">Infrastructure</span>
     </h1>
-    <p class="sub">Verifai scans a face, finds a real matching post on the web, and mints an unforgeable, non-transferable badge on-chain — a portable "I'm real" credential any platform can check.</p>
+    <p class="sub">OneProof scans a face, finds a real matching post on the web, and mints an unforgeable, non-transferable badge on-chain — a portable “I’m real” credential any platform can check.</p>
     <div class="hero-ctas">
       <a class="btn-pill filled btn-lg" href="/app">Launch App →</a>
       <a class="btn-pill btn-lg" href="#usecases">See use cases</a>
@@ -289,6 +327,19 @@
         <div class="pipe-chip"><b>3</b>Soulbound mint</div>
       </div>
     </div>
+    </div>
+    <aside class="signal-board" aria-label="OneProof verification flow">
+      <div class="signal-top"><span>OneProof / Identity signal</span><span class="signal-live"><b></b>Live protocol</span></div>
+      <div class="signal-lines">
+        <div class="signal-line"><i>01</i><span>Face encoding</span><em>SHA-256</em></div>
+        <div class="signal-line"><i>02</i><span>Open-web match</span><em>GOOGLE LENS</em></div>
+        <div class="signal-line"><i>03</i><span>Badge minting</span><em>SEPOLIA</em></div>
+      </div>
+      <div class="signal-core">
+        <h3>One person.<br>One signal.</h3>
+        <p>A privacy-conscious, reusable trust layer for platforms that need to know a user is real.</p>
+      </div>
+    </aside>
   </div>
 
   <div class="marquee-wrap">
@@ -400,15 +451,36 @@
 
   <div class="container">
     <div class="cta-band reveal">
-      <h2>Try it yourself</h2>
-      <p>Connect MetaMask, upload a photo, watch your badge get minted live.</p>
-      <a class="btn-pill filled btn-lg" href="/app">Launch App →</a>
+      <div class="cta-layout">
+        <div>
+          <span class="cta-kicker">READY TO VERIFY</span>
+          <h2>Claim a signal<br>that travels with you.</h2>
+          <p>Connect your wallet, upload a photo, and mint a reusable proof-of-human badge in one guided flow.</p>
+        </div>
+        <div class="cta-actions">
+          <div class="cta-steps" aria-label="Three verification steps"><span>01</span><span>02</span><span>03</span></div>
+          <a class="btn-pill filled btn-lg" href="/app">Start verification ↗</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <footer class="site mono">
-    VERIFAI · HH GOA 2026 · FACE IDENTIFICATION &amp; BLOCKCHAIN VERIFICATION<br>
-    NON-TRANSFERABLE BADGE · MINTED ONCE PER WALLET · SEPOLIA TESTNET
+  <footer class="site">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand"><span>1</span>OneProof</div>
+        <p class="footer-note">Portable proof that a person behind a wallet is real, without turning identity into a database.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#usecases">Use cases</a>
+        <a href="#how">Pipeline</a>
+        <a href="/app">Launch app ↗</a>
+      </nav>
+    </div>
+    <div class="footer-bottom mono">
+      <span>© 2026 ONEPROOF</span>
+      <span>SEPOLIA TESTNET · SOULBOUND PROTOCOL</span>
+    </div>
   </footer>
 
   <script>

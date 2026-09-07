@@ -15,7 +15,7 @@ CONTRACT_ABI_PATH = os.path.join(os.path.dirname(__file__), "..", "build", "Proo
 
 def get_web3() -> Web3:
     rpc_url = os.environ.get("RPC_URL", "http://127.0.0.1:8545")  # local Ganache/Hardhat default
-    w3 = Web3(Web3.HTTPProvider(rpc_url))
+    w3 = Web3(Web3.HTTPProvider(rpc_url, request_kwargs={"timeout": 20}))
     if not w3.is_connected():
         raise ConnectionError(f"Cannot connect to chain at {rpc_url}")
     return w3
@@ -58,7 +58,11 @@ def mint_badge(face_hash_hex: str, post_url: str, post_content: str, recipient: 
 
     signed = account.sign_transaction(tx)
     tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
-    receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+    # A pending testnet transaction must never leave the web request open
+    # indefinitely. The caller receives a clear retryable error after 75 s.
+    receipt = w3.eth.wait_for_transaction_receipt(tx_hash, timeout=75, poll_latency=2)
+    if receipt.status != 1:
+        raise RuntimeError("The mint transaction was reverted on-chain.")
 
     token_id = contract.functions.nextTokenId().call() - 1
     print(f"Badge minted. tx: {tx_hash.hex()}  token_id: {token_id}  owner: {to_address}")

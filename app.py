@@ -1,14 +1,10 @@
-"""Verifai — simple web UI over the pipeline (face -> web match -> soulbound badge).
+"""OneProof — simple web UI over the pipeline (face -> web match -> soulbound badge).
 Run: python app.py, then open http://127.0.0.1:5000
 """
 import os
 import traceback
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
-
-from scripts.face_id import encode_face, face_hash
-from scripts.reverse_search import search_image
-from scripts.blockchain_verify import mint_badge, reverify, get_web3
 
 load_dotenv()
 
@@ -38,6 +34,10 @@ def api_verify():
     connected_wallet = request.form.get("wallet_address") or None
 
     try:
+        from scripts.face_id import encode_face, face_hash
+        from scripts.reverse_search import search_image
+        from scripts.blockchain_verify import mint_badge, reverify, get_web3
+
         encoding = encode_face(image_path)
         fhash = face_hash(encoding)
 
