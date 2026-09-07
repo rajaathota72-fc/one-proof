@@ -1,4 +1,4 @@
-"""Deploys compiled Verification contract to RPC_URL using PRIVATE_KEY. Prints address — set as CONTRACT_ADDRESS."""
+"""Deploys compiled ProofOfHuman contract to RPC_URL using PRIVATE_KEY. Prints address — set as CONTRACT_ADDRESS."""
 import json
 import os
 from web3 import Web3
@@ -12,15 +12,15 @@ def main():
     if not w3.is_connected():
         raise ConnectionError(f"Cannot connect to chain at {rpc_url}")
 
-    with open(os.path.join(BUILD_DIR, "Verification.abi.json")) as f:
+    with open(os.path.join(BUILD_DIR, "ProofOfHuman.abi.json")) as f:
         abi = json.load(f)
-    with open(os.path.join(BUILD_DIR, "Verification.bin")) as f:
+    with open(os.path.join(BUILD_DIR, "ProofOfHuman.bin")) as f:
         bytecode = f.read()
 
     account = w3.eth.account.from_key(os.environ["PRIVATE_KEY"])
-    Verification = w3.eth.contract(abi=abi, bytecode=bytecode)
+    ProofOfHuman = w3.eth.contract(abi=abi, bytecode=bytecode)
 
-    tx = Verification.constructor().build_transaction({
+    tx = ProofOfHuman.constructor().build_transaction({
         "from": account.address,
         "nonce": w3.eth.get_transaction_count(account.address),
         "gas": 1_500_000,

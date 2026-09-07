@@ -1,4 +1,4 @@
-"""Step 3: upload sha256 hashes (face + matched post) to Verification contract,
+"""Step 3: mint a soulbound Proof-of-Human badge for the verified match,
 then re-read on-chain to confirm no tampering. RPC_URL defaults to local Ganache.
 """
 import os
@@ -7,7 +7,7 @@ import hashlib
 import sys
 from web3 import Web3
 
-CONTRACT_ABI_PATH = os.path.join(os.path.dirname(__file__), "..", "build", "Verification.abi.json")
+CONTRACT_ABI_PATH = os.path.join(os.path.dirname(__file__), "..", "build", "ProofOfHuman.abi.json")
 
 
 def get_web3() -> Web3:
@@ -29,14 +29,16 @@ def sha256_hex(data: str) -> str:
     return hashlib.sha256(data.encode()).hexdigest()
 
 
-def upload_record(face_hash_hex: str, post_url: str, post_content: str) -> int:
+def mint_badge(face_hash_hex: str, post_url: str, post_content: str) -> int:
+    """Mints the Proof-of-Human badge to the signing wallet."""
     w3 = get_web3()
     contract = get_contract(w3)
 
     account = w3.eth.account.from_key(os.environ["PRIVATE_KEY"])
     post_hash_hex = sha256_hex(post_url + post_content)
 
-    tx = contract.functions.addRecord(
+    tx = contract.functions.mint(
+        account.address,
         bytes.fromhex(face_hash_hex),
         bytes.fromhex(post_hash_hex),
         post_url,
@@ -51,21 +53,21 @@ def upload_record(face_hash_hex: str, post_url: str, post_content: str) -> int:
     tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
     receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
-    record_id = contract.functions.totalRecords().call() - 1
-    print(f"Uploaded. tx: {tx_hash.hex()}  record_id: {record_id}")
-    return record_id
+    token_id = contract.functions.nextTokenId().call() - 1
+    print(f"Badge minted. tx: {tx_hash.hex()}  token_id: {token_id}  owner: {account.address}")
+    return token_id
 
 
-def reverify(record_id: int, face_hash_hex: str, post_url: str, post_content: str) -> bool:
+def reverify(token_id: int, face_hash_hex: str, post_url: str, post_content: str) -> bool:
     w3 = get_web3()
     contract = get_contract(w3)
     post_hash_hex = sha256_hex(post_url + post_content)
     matched = contract.functions.verify(
-        record_id,
+        token_id,
         bytes.fromhex(face_hash_hex),
         bytes.fromhex(post_hash_hex),
     ).call()
-    print(f"Re-verification against on-chain record {record_id}: {'MATCH' if matched else 'MISMATCH'}")
+    print(f"Re-verification against on-chain badge {token_id}: {'MATCH' if matched else 'MISMATCH'}")
     return matched
 
 
@@ -75,5 +77,5 @@ if __name__ == "__main__":
         sys.exit(1)
 
     face_hash_hex, post_url, post_content = sys.argv[1], sys.argv[2], sys.argv[3]
-    rid = upload_record(face_hash_hex, post_url, post_content)
-    reverify(rid, face_hash_hex, post_url, post_content)
+    tid = mint_badge(face_hash_hex, post_url, post_content)
+    reverify(tid, face_hash_hex, post_url, post_content)

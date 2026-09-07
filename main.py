@@ -1,4 +1,4 @@
-"""Pipeline: face scan -> web search -> blockchain upload + re-verify.
+"""Pipeline: face scan -> web search -> mint soulbound Proof-of-Human badge + re-verify.
 Usage: python main.py sample_images/input.jpg
 """
 import sys
@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 from scripts.face_id import encode_face, face_hash
 from scripts.reverse_search import search_image
-from scripts.blockchain_verify import upload_record, reverify
+from scripts.blockchain_verify import mint_badge, reverify
 
 load_dotenv()
 
@@ -27,15 +27,15 @@ def run(image_path: str):
 
     post_content = f"{top['title']} | {top['snippet']}"
 
-    print("[3/3] Uploading hash record to blockchain ...")
-    record_id = upload_record(fhash, top["url"], post_content)
-    ok = reverify(record_id, fhash, top["url"], post_content)
+    print("[3/3] Minting Proof-of-Human badge ...")
+    token_id = mint_badge(fhash, top["url"], post_content)
+    ok = reverify(token_id, fhash, top["url"], post_content)
 
     print()
     print("Pipeline complete." if ok else "Pipeline complete but verification FAILED.")
-    print(f"  face_hash   = {fhash}")
-    print(f"  post_url    = {top['url']}")
-    print(f"  record_id   = {record_id}")
+    print(f"  face_hash = {fhash}")
+    print(f"  post_url  = {top['url']}")
+    print(f"  token_id  = {token_id}")
 
 
 if __name__ == "__main__":
