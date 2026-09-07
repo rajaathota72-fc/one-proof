@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Verifai — Proof of Human</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #08090d;
+      --panel: #14171f;
+      --panel2: #0f1117;
+      --border: #262a35;
+      --text: #e8eaf0;
+      --muted: #8a8f9c;
+      --accent: #6d5ef8;
+      --accent-b: #4a3ff0;
+      --accent2: #29d0a0;
+      --warn: #f5b942;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 15% -10%, rgba(109,94,248,.22), transparent 42%),
+        radial-gradient(circle at 90% 5%, rgba(41,208,160,.13), transparent 38%),
+        radial-gradient(circle at 50% 60%, rgba(109,94,248,.08), transparent 45%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: inherit; }
+    .container { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+
+    /* ---------- nav ---------- */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 920px; margin: 0 auto; padding: 22px 20px;
+    }
+    .logo { display: inline-flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 14px rgba(109,94,248,.7);
+    }
+    .nav-links { display: flex; align-items: center; gap: 22px; font-size: 13.5px; color: var(--muted); }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      padding: 9px 18px; border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-b));
+      color: white; font-weight: 700; font-size: 13px;
+      text-decoration: none;
+    }
+
+    /* ---------- hero ---------- */
+    .hero { text-align: center; padding: 70px 20px 50px; }
+    .kicker {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 700; color: var(--accent2);
+      background: rgba(41,208,160,.1); border: 1px solid rgba(41,208,160,.25);
+      padding: 5px 13px; border-radius: 999px; margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-size: 52px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.08;
+      margin: 0 0 18px;
+      background: linear-gradient(135deg, #fff 25%, #b6aeff 100%);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p.sub { font-size: 17px; color: var(--muted); max-width: 560px; margin: 0 auto 32px; line-height: 1.55; }
+    .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 14px 28px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-b));
+      color: white; font-weight: 700; font-size: 15px; text-decoration: none;
+      box-shadow: 0 14px 36px -14px rgba(109,94,248,.8);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary {
+      padding: 14px 26px; border-radius: 12px;
+      border: 1px solid var(--border); color: var(--text);
+      font-weight: 600; font-size: 15px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary:hover { border-color: var(--muted); }
+
+    .pipeline-strip {
+      display: flex; justify-content: center; gap: 10px; margin-top: 40px; flex-wrap: wrap;
+    }
+    .pstep {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--panel); border: 1px solid var(--border);
+      padding: 8px 14px; border-radius: 999px; font-size: 12.5px; color: var(--muted);
+    }
+    .pstep b {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent2); color: #06231b;
+      font-size: 10.5px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pstep-arrow { color: var(--border); align-self: center; }
+
+    /* ---------- sections ---------- */
+    section { padding: 60px 20px; }
+    .section-head { text-align: center; margin-bottom: 40px; }
+    .section-head .eyebrow { font-size: 12px; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: .08em; }
+    .section-head h2 { font-size: 30px; font-weight: 800; letter-spacing: -.8px; margin: 8px 0 10px; }
+    .section-head p { color: var(--muted); font-size: 15px; max-width: 480px; margin: 0 auto; }
+
+    /* use cases grid */
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .uc-card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
+      padding: 22px; transition: border-color .15s, transform .15s;
+    }
+    .uc-card:hover { border-color: rgba(109,94,248,.4); transform: translateY(-2px); }
+    .uc-card .icon { font-size: 26px; margin-bottom: 12px; }
+    .uc-card h3 { font-size: 16px; font-weight: 700; margin: 0 0 8px; }
+    .uc-card p { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin: 0; }
+
+    /* how it works */
+    .steps-detail { display: flex; flex-direction: column; gap: 14px; max-width: 620px; margin: 0 auto; }
+    .step-detail {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--panel2); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px;
+    }
+    .step-detail .num {
+      flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #06120f; font-weight: 800; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-detail h4 { margin: 0 0 4px; font-size: 15px; font-weight: 700; }
+    .step-detail p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+    /* tech stack */
+    .stack-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .stack-chip {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 999px;
+      padding: 8px 16px; font-size: 12.5px; font-weight: 600; color: var(--muted);
+    }
+    .stack-chip b { color: var(--text); }
+
+    /* final CTA */
+    .cta-band {
+      text-align: center; padding: 60px 20px; margin: 20px auto 0; max-width: 920px;
+      background: linear-gradient(160deg, rgba(109,94,248,.15), rgba(41,208,160,.08));
+      border: 1px solid rgba(109,94,248,.3); border-radius: 24px;
+    }
+    .cta-band h2 { font-size: 28px; font-weight: 800; margin: 0 0 10px; letter-spacing: -.6px; }
+    .cta-band p { color: var(--muted); margin: 0 0 24px; font-size: 14.5px; }
+
+    footer {
+      text-align: center; padding: 40px 20px 50px; color: var(--muted); font-size: 12.5px;
+      border-top: 1px solid var(--border); margin-top: 40px;
+    }
+    footer a { color: var(--accent2); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 36px; }
+      .grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo"><span class="dot"></span>Verifai</div>
+    <div class="nav-links">
+      <a href="#usecases">Use cases</a>
+      <a href="#how">How it works</a>
+      <a href="#stack">Tech</a>
+    </div>
+    <a class="nav-cta" href="/app">Launch App →</a>
+  </nav>
+
+  <div class="hero">
+    <div class="kicker">🔗 Soulbound NFT · Sepolia Testnet</div>
+    <h1>Proof you're<br>a real human.</h1>
+    <p class="sub">Verifai scans a face, finds a real matching post on the web, and mints an unforgeable, non-transferable badge on-chain — a portable "I'm real" credential any platform can check.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="/app">🚀 Launch App</a>
+      <a class="btn-secondary" href="#usecases">See use cases</a>
+    </div>
+
+    <div class="pipeline-strip">
+      <div class="pstep"><b>1</b>Face scan</div>
+      <span class="pstep-arrow">→</span>
+      <div class="pstep"><b>2</b>Web match</div>
+      <span class="pstep-arrow">→</span>
+      <div class="pstep"><b>3</b>Soulbound mint</div>
+    </div>
+  </div>
+
+  <section id="usecases">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Use cases</div>
+        <h2>Where "Proof of Human" matters</h2>
+        <p>Any place fake profiles and bots cause real harm.</p>
+      </div>
+      <div class="grid">
+        <div class="uc-card">
+          <div class="icon">💘</div>
+          <h3>Dating apps</h3>
+          <p>Stop catfishing before the first message. A verified badge proves the profile photo belongs to a real, findable person — not a stolen or AI-generated image.</p>
+        </div>
+        <div class="uc-card">
+          <div class="icon">🏛️</div>
+          <h3>DAOs &amp; governance</h3>
+          <p>Sybil-resist voting and airdrops. One soulbound badge per wallet means one real human, one voice — no bot farms gaming quorum.</p>
+        </div>
+        <div class="uc-card">
+          <div class="icon">💼</div>
+          <h3>Freelance marketplaces</h3>
+          <p>Clients hire real people with a real online track record, not throwaway accounts. The badge is the trust signal, checkable on-chain.</p>
+        </div>
+        <div class="uc-card">
+          <div class="icon">🎮</div>
+          <h3>Gaming &amp; communities</h3>
+          <p>Gate whitelists, tournaments, or mod roles to verified humans — cutting down multi-accounting and bot abuse without collecting IDs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Pipeline</div>
+        <h2>How it works</h2>
+        <p>Three steps, fully automated, end to end.</p>
+      </div>
+      <div class="steps-detail">
+        <div class="step-detail">
+          <div class="num">1</div>
+          <div>
+            <h4>Face detection &amp; encoding</h4>
+            <p>Detects the face in your photo and encodes it into a 128-dimension vector, then hashes it (SHA-256) — the raw biometric never leaves your machine.</p>
+          </div>
+        </div>
+        <div class="step-detail">
+          <div class="num">2</div>
+          <div>
+            <h4>Real web / social search</h4>
+            <p>Runs a genuine reverse-image search (Google Lens via SerpApi) against the live web to find an actual matching post — not a hardcoded result.</p>
+          </div>
+        </div>
+        <div class="step-detail">
+          <div class="num">3</div>
+          <div>
+            <h4>Soulbound badge minted on-chain</h4>
+            <p>Hashes the matched post and mints a non-transferable NFT to your wallet on Sepolia, then re-reads it on-chain to prove the record hasn't been tampered with.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Built with</div>
+        <h2>Tech stack</h2>
+      </div>
+      <div class="stack-row">
+        <div class="stack-chip"><b>face_recognition</b> · dlib</div>
+        <div class="stack-chip"><b>SerpApi</b> · Google Lens</div>
+        <div class="stack-chip"><b>Solidity</b> · soulbound ERC-721</div>
+        <div class="stack-chip"><b>web3.py</b> · Sepolia testnet</div>
+        <div class="stack-chip"><b>MetaMask</b> connect</div>
+        <div class="stack-chip"><b>Flask</b></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Try it yourself</h2>
+    <p>Connect MetaMask, upload a photo, watch your badge get minted live.</p>
+    <a class="btn-primary" href="/app">🚀 Launch App</a>
+  </div>
+
+  <footer>
+    Verifai · HH Goa 2026 · Face Identification &amp; Blockchain Verification<br>
+    Non-transferable badge, minted once per wallet · Sepolia Testnet
+  </footer>
+</body>
+</html>

@@ -65,7 +65,8 @@ python scripts/blockchain_verify.py <face_hash> <post_url> <post_content>
 ```bash
 python app.py
 ```
-Open `http://127.0.0.1:5000`, upload a photo, watch the 3 steps run and the badge get minted.
+- `http://127.0.0.1:5000` — landing page: use cases, how it works, tech stack, "Launch App" CTA.
+- `http://127.0.0.1:5000/app` — the app: connect MetaMask, upload a photo, watch the 3 steps run and the badge get minted straight to your wallet.
 
 ## Limitations
 
