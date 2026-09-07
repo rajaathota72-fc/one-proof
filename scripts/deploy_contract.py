@@ -1,7 +1,10 @@
 """Deploys compiled ProofOfHuman contract to RPC_URL using PRIVATE_KEY. Prints address — set as CONTRACT_ADDRESS."""
 import json
 import os
+from dotenv import load_dotenv
 from web3 import Web3
+
+load_dotenv()
 
 BUILD_DIR = os.path.join(os.path.dirname(__file__), "..", "build")
 

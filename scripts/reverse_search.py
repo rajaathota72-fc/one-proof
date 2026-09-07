@@ -6,6 +6,9 @@ pipeline just needs back a list of {url, title, snippet} dicts.
 import os
 import sys
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 SERPAPI_ENDPOINT = "https://serpapi.com/search.json"
 

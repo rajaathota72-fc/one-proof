@@ -5,7 +5,10 @@ import os
 import json
 import hashlib
 import sys
+from dotenv import load_dotenv
 from web3 import Web3
+
+load_dotenv()
 
 CONTRACT_ABI_PATH = os.path.join(os.path.dirname(__file__), "..", "build", "ProofOfHuman.abi.json")
 
