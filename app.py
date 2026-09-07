@@ -30,6 +30,7 @@ def api_verify():
 
     image_path = os.path.join(UPLOAD_DIR, file.filename)
     file.save(image_path)
+    connected_wallet = request.form.get("wallet_address") or None
 
     try:
         encoding = encode_face(image_path)
@@ -41,11 +42,11 @@ def api_verify():
         top = matches[0]
         post_content = f"{top['title']} | {top['snippet']}"
 
-        token_id = mint_badge(fhash, top["url"], post_content)
+        token_id = mint_badge(fhash, top["url"], post_content, recipient=connected_wallet)
         verified = reverify(token_id, fhash, top["url"], post_content)
 
         w3 = get_web3()
-        wallet_address = w3.eth.account.from_key(os.environ["PRIVATE_KEY"]).address
+        wallet_address = connected_wallet or w3.eth.account.from_key(os.environ["PRIVATE_KEY"]).address
         contract_address = os.environ.get("CONTRACT_ADDRESS", "")
 
         return jsonify({

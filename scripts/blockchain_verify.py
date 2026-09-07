@@ -32,16 +32,20 @@ def sha256_hex(data: str) -> str:
     return hashlib.sha256(data.encode()).hexdigest()
 
 
-def mint_badge(face_hash_hex: str, post_url: str, post_content: str) -> int:
-    """Mints the Proof-of-Human badge to the signing wallet."""
+def mint_badge(face_hash_hex: str, post_url: str, post_content: str, recipient: str = None) -> int:
+    """Mints the Proof-of-Human badge to `recipient` (defaults to the signing wallet).
+    Gas is always paid by the backend signer, even when the badge goes to a
+    connected MetaMask address, so the user never needs test ETH themselves.
+    """
     w3 = get_web3()
     contract = get_contract(w3)
 
     account = w3.eth.account.from_key(os.environ["PRIVATE_KEY"])
+    to_address = Web3.to_checksum_address(recipient) if recipient else account.address
     post_hash_hex = sha256_hex(post_url + post_content)
 
     tx = contract.functions.mint(
-        account.address,
+        to_address,
         bytes.fromhex(face_hash_hex),
         bytes.fromhex(post_hash_hex),
         post_url,
@@ -57,7 +61,7 @@ def mint_badge(face_hash_hex: str, post_url: str, post_content: str) -> int:
     receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
     token_id = contract.functions.nextTokenId().call() - 1
-    print(f"Badge minted. tx: {tx_hash.hex()}  token_id: {token_id}  owner: {account.address}")
+    print(f"Badge minted. tx: {tx_hash.hex()}  token_id: {token_id}  owner: {to_address}")
     return token_id
 
 

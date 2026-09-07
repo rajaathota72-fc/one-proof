@@ -6,59 +6,139 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
-      --bg: #0b0d12;
+      --bg: #08090d;
       --panel: #14171f;
       --panel2: #0f1117;
       --border: #262a35;
       --text: #e8eaf0;
       --muted: #8a8f9c;
       --accent: #6d5ef8;
+      --accent-b: #4a3ff0;
       --accent2: #29d0a0;
       --danger: #ff6b6b;
+      --warn: #f5b942;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       background:
-        radial-gradient(circle at 20% -10%, rgba(109,94,248,.18), transparent 40%),
-        radial-gradient(circle at 90% 0%, rgba(41,208,160,.10), transparent 35%),
+        radial-gradient(circle at 15% -10%, rgba(109,94,248,.20), transparent 42%),
+        radial-gradient(circle at 90% 5%, rgba(41,208,160,.12), transparent 38%),
+        radial-gradient(circle at 50% 110%, rgba(109,94,248,.10), transparent 40%),
         var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       min-height: 100vh;
+    }
+
+    /* ---------- nav ---------- */
+    nav {
       display: flex;
-      justify-content: center;
-      padding: 48px 20px;
-    }
-    .wrap { width: 100%; max-width: 560px; }
-    header { text-align: center; margin-bottom: 32px; }
-    .logo {
-      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      font-size: 30px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+      justify-content: space-between;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 22px 20px 0;
     }
+    .logo { display: inline-flex; align-items: center; gap: 9px; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
     .logo .dot {
-      width: 11px; height: 11px; border-radius: 50%;
+      width: 10px; height: 10px; border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 0 16px rgba(109,94,248,.6);
+      box-shadow: 0 0 14px rgba(109,94,248,.7);
     }
-    header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
+
+    .wallet-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color .15s, transform .1s;
+    }
+    .wallet-btn:hover { border-color: var(--accent); }
+    .wallet-btn:active { transform: scale(.98); }
+    .wallet-btn.connected { border-color: rgba(41,208,160,.4); background: rgba(41,208,160,.08); }
+    .wallet-btn .wdot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); box-shadow: 0 0 8px rgba(41,208,160,.8); }
+    .wallet-btn img { width: 16px; height: 16px; }
+
+    /* ---------- hero / wrap ---------- */
+    .wrap { width: 100%; max-width: 560px; margin: 0 auto; padding: 36px 20px 48px; }
+    header { text-align: center; margin-bottom: 30px; }
+    header h1 {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin: 0;
+      background: linear-gradient(135deg, #fff 30%, #b6aeff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header p { color: var(--muted); margin-top: 10px; font-size: 14.5px; }
+    .pipeline-tags {
+      display: flex; justify-content: center; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+    }
+    .ptag {
+      font-size: 11.5px; font-weight: 600; color: var(--muted);
+      background: var(--panel2); border: 1px solid var(--border);
+      padding: 5px 11px; border-radius: 999px;
+    }
+    .ptag b { color: var(--accent2); font-weight: 700; }
 
     .card {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 28px;
-      box-shadow: 0 20px 60px -20px rgba(0,0,0,.6);
+      box-shadow: 0 25px 70px -25px rgba(0,0,0,.7);
+      position: relative;
     }
+
+    .network-pill {
+      position: absolute;
+      top: -12px; right: 20px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--warn);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .network-pill .ndot { width: 6px; height: 6px; border-radius: 50%; background: var(--warn); }
+
+    /* ---------- wallet gate ---------- */
+    .wallet-gate {
+      text-align: center;
+      padding: 30px 16px;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+    .wallet-gate .fox { font-size: 34px; margin-bottom: 10px; }
+    .wallet-gate button {
+      margin-top: 16px;
+      padding: 13px 28px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f6851b, #e2761b);
+      color: white;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .wallet-gate button:hover { opacity: .92; }
 
     /* ---------- upload form ---------- */
     .drop {
       border: 1.5px dashed var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 36px 16px;
       text-align: center;
       color: var(--muted);
@@ -67,39 +147,52 @@
     }
     .drop:hover, .drop.dragover { border-color: var(--accent); background: rgba(109,94,248,.05); }
     .drop input { display: none; }
-    .drop .icon { font-size: 26px; margin-bottom: 6px; opacity: .7; }
+    .drop .icon { font-size: 28px; margin-bottom: 6px; opacity: .8; }
     .drop .filename { margin-top: 8px; color: var(--text); font-size: 13px; }
     .drop .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
     .preview-thumb {
       display: none;
-      max-width: 160px;
-      max-height: 160px;
-      border-radius: 10px;
+      max-width: 150px;
+      max-height: 150px;
+      border-radius: 12px;
       margin: 0 auto 10px;
       border: 1px solid var(--border);
     }
 
+    .connected-strip {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px;
+      padding: 10px 14px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .connected-strip .addr { color: var(--accent2); font-family: ui-monospace, monospace; }
+
     button.primary {
       width: 100%;
       margin-top: 16px;
-      padding: 13px;
+      padding: 14px;
       border: none;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent), #4a3ff0);
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-b));
       color: white;
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: opacity .15s, transform .1s;
+      transition: opacity .15s, transform .1s, box-shadow .15s;
+      box-shadow: 0 10px 30px -12px rgba(109,94,248,.7);
     }
-    button.primary:hover { opacity: 0.92; }
+    button.primary:hover { opacity: 0.94; box-shadow: 0 14px 36px -12px rgba(109,94,248,.85); }
     button.primary:active { transform: scale(.99); }
-    button.primary:disabled { opacity: .6; cursor: progress; }
+    button.primary:disabled { opacity: .5; cursor: progress; box-shadow: none; }
 
     button.ghost {
       width: 100%;
@@ -131,18 +224,18 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 14px;
-      border-radius: 10px;
+      padding: 13px 15px;
+      border-radius: 12px;
       background: var(--panel2);
       border: 1px solid var(--border);
-      opacity: .45;
-      transition: opacity .2s, border-color .2s;
+      opacity: .4;
+      transition: opacity .2s, border-color .2s, background .2s;
       font-size: 13.5px;
     }
-    .p-step.active { opacity: 1; border-color: rgba(109,94,248,.4); }
+    .p-step.active { opacity: 1; border-color: rgba(109,94,248,.45); background: rgba(109,94,248,.06); }
     .p-step.done { opacity: 1; border-color: rgba(41,208,160,.35); }
     .p-icon {
-      width: 20px; height: 20px;
+      width: 22px; height: 22px;
       flex-shrink: 0;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
@@ -151,7 +244,7 @@
       color: var(--muted);
     }
     .p-step.active .p-icon { background: var(--accent); color: #fff; }
-    .p-step.done .p-icon { background: var(--accent2); color: #06231b; }
+    .p-step.done .p-icon { background: var(--accent2); color: #06231b; font-weight: 800; }
     .p-step.active .p-icon .spinner { width: 11px; height: 11px; border-width: 2px; }
 
     /* ---------- result ---------- */
@@ -160,16 +253,16 @@
       text-align: center;
       color: var(--accent2);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       margin: 4px 0 18px;
-      letter-spacing: .02em;
+      letter-spacing: .03em;
     }
 
     .badge-card {
-      background: linear-gradient(160deg, #1a1530 0%, #0f1117 60%);
-      border: 1px solid rgba(109,94,248,.35);
-      border-radius: 16px;
-      padding: 22px;
+      background: linear-gradient(160deg, #201a3d 0%, #0f1117 65%);
+      border: 1px solid rgba(109,94,248,.4);
+      border-radius: 18px;
+      padding: 24px;
       display: flex;
       gap: 16px;
       align-items: center;
@@ -179,22 +272,34 @@
     .badge-card::after {
       content: "";
       position: absolute; inset: 0;
-      background: radial-gradient(circle at 100% 0%, rgba(109,94,248,.25), transparent 55%);
+      background: radial-gradient(circle at 100% 0%, rgba(109,94,248,.3), transparent 55%);
       pointer-events: none;
     }
+    .badge-card::before {
+      content: "SOULBOUND";
+      position: absolute; top: 12px; right: -30px;
+      background: var(--accent2);
+      color: #06231b;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      padding: 3px 34px;
+      transform: rotate(35deg);
+    }
     .badge-card img {
-      width: 72px; height: 72px;
+      width: 76px; height: 76px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--accent2);
       flex-shrink: 0;
+      box-shadow: 0 0 0 4px rgba(41,208,160,.12);
     }
-    .badge-card .bname { font-size: 16px; font-weight: 700; }
-    .badge-card .bsub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .badge-card .bname { font-size: 16.5px; font-weight: 800; }
+    .badge-card .bsub { font-size: 12px; color: var(--muted); margin-top: 3px; }
     .badge-card .bverified {
       display: inline-flex; align-items: center; gap: 5px;
-      margin-top: 8px;
-      padding: 3px 10px;
+      margin-top: 9px;
+      padding: 4px 11px;
       border-radius: 999px;
       font-size: 11px;
       font-weight: 700;
@@ -209,13 +314,13 @@
       gap: 10px;
     }
     .detail {
-      padding: 12px 14px;
+      padding: 13px 15px;
       background: var(--panel2);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
     }
     .detail .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; display: flex; justify-content: space-between; align-items: center; }
-    .detail .value { font-size: 13.5px; margin-top: 4px; word-break: break-all; }
+    .detail .value { font-size: 13.5px; margin-top: 5px; word-break: break-all; }
     .detail .value a { color: var(--accent2); text-decoration: none; }
     .detail .value a:hover { text-decoration: underline; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
@@ -228,85 +333,215 @@
     .error {
       margin-top: 20px;
       padding: 14px;
-      border-radius: 10px;
+      border-radius: 12px;
       background: rgba(255,107,107,.08);
       border: 1px solid rgba(255,107,107,.3);
       color: var(--danger);
-      font-size: 14px;
+      font-size: 13.5px;
       display: none;
     }
+
+    /* ---------- toast ---------- */
+    #toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,.6);
+      z-index: 10;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     footer { text-align: center; margin-top: 24px; color: var(--muted); font-size: 12px; }
   </style>
 </head>
 <body>
+  <nav>
+    <div class="logo"><span class="dot"></span>Verifai</div>
+    <button class="wallet-btn" id="walletBtn">
+      <span class="wdot" id="walletDot" style="display:none;"></span>
+      <span id="walletBtnLabel">Connect Wallet</span>
+    </button>
+  </nav>
+
   <div class="wrap">
     <header>
-      <div class="logo"><span class="dot"></span>Verifai</div>
-      <p>Face scan &rarr; web match &rarr; soulbound Proof-of-Human badge</p>
+      <h1>Proof of Human</h1>
+      <p>Scan your face, find your real online footprint, mint an unforgeable badge.</p>
+      <div class="pipeline-tags">
+        <div class="ptag"><b>1</b> Face scan</div>
+        <div class="ptag"><b>2</b> Web match</div>
+        <div class="ptag"><b>3</b> Soulbound mint</div>
+      </div>
     </header>
 
     <div class="card">
-      <form id="form">
-        <label class="drop" for="image" id="dropzone">
-          <img class="preview-thumb" id="thumb" alt="preview">
-          <div class="icon">📷</div>
-          <div id="dropText">Click or drag a photo here</div>
-          <div class="filename" id="filename"></div>
-          <div class="hint">JPG / PNG · a clear front-facing face works best</div>
-          <input type="file" name="image" id="image" accept="image/*" required>
-        </label>
-        <button type="submit" class="primary" id="btn">
-          <span id="btnLabel">Verify &amp; Mint Badge</span>
-        </button>
-      </form>
+      <div class="network-pill"><span class="ndot"></span>Sepolia Testnet</div>
 
-      <div id="progress">
-        <div class="p-step" id="p1"><div class="p-icon">1</div><div>Detecting &amp; encoding face…</div></div>
-        <div class="p-step" id="p2"><div class="p-icon">2</div><div>Searching the web for a matching post…</div></div>
-        <div class="p-step" id="p3"><div class="p-icon">3</div><div>Minting soulbound badge on Sepolia…</div></div>
+      <div class="wallet-gate" id="walletGate">
+        <div class="fox">🦊</div>
+        <div>Connect your MetaMask wallet — your Proof-of-Human badge<br>will be minted directly to your own address.</div>
+        <button id="connectBtn">Connect MetaMask</button>
       </div>
 
-      <div class="error" id="error"></div>
-
-      <div id="result">
-        <div class="result-title">✓ Pipeline complete</div>
-
-        <div class="badge-card">
-          <img id="resultImg" alt="scanned face">
-          <div>
-            <div class="bname">Proof of Human <span id="tokenId"></span></div>
-            <div class="bsub">Non-transferable · minted to <span id="walletShort" class="mono"></span></div>
-            <div class="bverified" id="verifiedPill"></div>
-          </div>
+      <div id="appBody" style="display:none;">
+        <div class="connected-strip">
+          <span>Minting to</span>
+          <span class="addr" id="connectedAddr"></span>
         </div>
 
-        <div class="details">
-          <div class="detail">
-            <div class="label">
-              Face hash (SHA-256)
-              <button class="copy-btn" onclick="copyText('faceHash')">copy</button>
+        <form id="form">
+          <label class="drop" for="image" id="dropzone">
+            <img class="preview-thumb" id="thumb" alt="preview">
+            <div class="icon">📷</div>
+            <div id="dropText">Click or drag a photo here</div>
+            <div class="filename" id="filename"></div>
+            <div class="hint">JPG / PNG · a clear front-facing face works best</div>
+            <input type="file" name="image" id="image" accept="image/*" required>
+          </label>
+          <button type="submit" class="primary" id="btn">
+            <span id="btnLabel">Verify &amp; Mint Badge</span>
+          </button>
+        </form>
+
+        <div id="progress">
+          <div class="p-step" id="p1"><div class="p-icon">1</div><div>Detecting &amp; encoding face…</div></div>
+          <div class="p-step" id="p2"><div class="p-icon">2</div><div>Searching the web for a matching post…</div></div>
+          <div class="p-step" id="p3"><div class="p-icon">3</div><div>Minting soulbound badge on Sepolia…</div></div>
+        </div>
+
+        <div class="error" id="error"></div>
+
+        <div id="result">
+          <div class="result-title">✓ Pipeline complete</div>
+
+          <div class="badge-card">
+            <img id="resultImg" alt="scanned face">
+            <div>
+              <div class="bname">Proof of Human <span id="tokenId"></span></div>
+              <div class="bsub">Non-transferable · owned by <span id="walletShort" class="mono"></span></div>
+              <div class="bverified" id="verifiedPill"></div>
             </div>
-            <div class="value mono" id="faceHash"></div>
           </div>
-          <div class="detail">
-            <div class="label">Matching post found</div>
-            <div class="value"><a id="matchLink" target="_blank"></a></div>
-          </div>
-          <div class="detail">
-            <div class="label">On-chain record</div>
-            <div class="value"><a id="etherscanLink" target="_blank">View contract on Sepolia Etherscan →</a></div>
-          </div>
-        </div>
 
-        <button class="ghost" id="resetBtn">Verify another photo</button>
+          <div class="details">
+            <div class="detail">
+              <div class="label">
+                Face hash (SHA-256)
+                <button class="copy-btn" onclick="copyText('faceHash')">copy</button>
+              </div>
+              <div class="value mono" id="faceHash"></div>
+            </div>
+            <div class="detail">
+              <div class="label">Matching post found</div>
+              <div class="value"><a id="matchLink" target="_blank"></a></div>
+            </div>
+            <div class="detail">
+              <div class="label">On-chain record</div>
+              <div class="value"><a id="etherscanLink" target="_blank">View contract on Sepolia Etherscan →</a></div>
+            </div>
+          </div>
+
+          <button class="ghost" id="resetBtn">Verify another photo</button>
+        </div>
       </div>
     </div>
 
     <footer>Verifai · HH Goa 2026 · non-transferable badge, minted once per wallet</footer>
   </div>
 
+  <div id="toast"></div>
+
   <script>
+    const SEPOLIA_CHAIN_ID = '0xaa36a7';
+    let connectedAddress = null;
+
+    const walletBtn = document.getElementById('walletBtn');
+    const walletDot = document.getElementById('walletDot');
+    const walletBtnLabel = document.getElementById('walletBtnLabel');
+    const walletGate = document.getElementById('walletGate');
+    const appBody = document.getElementById('appBody');
+    const connectBtn = document.getElementById('connectBtn');
+    const connectedAddr = document.getElementById('connectedAddr');
+
+    function short(addr) { return addr ? addr.slice(0, 6) + '…' + addr.slice(-4) : ''; }
+
+    function showToast(msg, ms = 3200) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), ms);
+    }
+
+    function setConnected(address) {
+      connectedAddress = address;
+      walletDot.style.display = 'inline-block';
+      walletBtnLabel.textContent = short(address);
+      walletBtn.classList.add('connected');
+      walletGate.style.display = 'none';
+      appBody.style.display = 'block';
+      connectedAddr.textContent = short(address);
+    }
+
+    async function connectWallet() {
+      if (!window.ethereum) {
+        showToast('MetaMask not found — install it from metamask.io');
+        window.open('https://metamask.io/download/', '_blank');
+        return;
+      }
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        if (!accounts || !accounts.length) return;
+
+        // Ensure Sepolia network
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: SEPOLIA_CHAIN_ID }],
+          });
+        } catch (switchErr) {
+          if (switchErr.code === 4902) {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [{
+                chainId: SEPOLIA_CHAIN_ID,
+                chainName: 'Sepolia',
+                nativeCurrency: { name: 'Sepolia ETH', symbol: 'ETH', decimals: 18 },
+                rpcUrls: ['https://ethereum-sepolia-rpc.publicnode.com'],
+                blockExplorerUrls: ['https://sepolia.etherscan.io'],
+              }],
+            });
+          }
+        }
+
+        setConnected(accounts[0]);
+        showToast('Wallet connected — badge will mint to ' + short(accounts[0]));
+      } catch (err) {
+        showToast(err.message || 'Connection rejected');
+      }
+    }
+
+    walletBtn.addEventListener('click', connectWallet);
+    connectBtn.addEventListener('click', connectWallet);
+
+    if (window.ethereum) {
+      window.ethereum.request({ method: 'eth_accounts' }).then(accounts => {
+        if (accounts.length) setConnected(accounts[0]);
+      });
+      window.ethereum.on && window.ethereum.on('accountsChanged', accounts => {
+        if (accounts.length) setConnected(accounts[0]);
+        else location.reload();
+      });
+    }
+
+    /* ---------- upload + verify flow ---------- */
     const dropzone = document.getElementById('dropzone');
     const input = document.getElementById('image');
     const filename = document.getElementById('filename');
@@ -351,13 +586,13 @@
 
     function copyText(id) {
       navigator.clipboard.writeText(document.getElementById(id).textContent);
+      showToast('Copied to clipboard');
     }
-
-    function short(addr) { return addr ? addr.slice(0, 6) + '…' + addr.slice(-4) : ''; }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!input.files[0]) return;
+      if (!connectedAddress) { showToast('Connect your wallet first'); return; }
 
       form.style.display = 'none';
       errorBox.style.display = 'none';
@@ -368,8 +603,8 @@
 
       const formData = new FormData();
       formData.append('image', input.files[0]);
+      formData.append('wallet_address', connectedAddress);
 
-      // stagger the visual progression so each step reads before the next appears
       const t1 = setTimeout(() => { setStep(1, 'done'); setStep(2, 'active'); }, 1200);
       const t2 = setTimeout(() => { setStep(2, 'done'); setStep(3, 'active'); }, 3200);
 
@@ -396,6 +631,7 @@
           if (data.etherscan_url) { eth.href = data.etherscan_url; eth.parentElement.parentElement.style.display = 'block'; }
           else { eth.parentElement.parentElement.style.display = 'none'; }
           resultBox.style.display = 'block';
+          showToast('Badge #' + data.token_id + ' minted 🎉');
         }, 500);
 
       } catch (err) {
