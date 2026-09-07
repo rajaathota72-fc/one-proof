@@ -43,3 +43,13 @@ CONTRACT_ADDRESS=
 ```
 
 Use a Sepolia RPC and a funded signer wallet for testnet mints. Long-running requests time out and return a retryable error.
+
+## Deploy to Heroku
+
+The repository includes a Procfile and runtime configuration.
+
+    heroku create your-oneproof-app
+    heroku config:set SERPAPI_KEY=... IMAGE_PUBLIC_URL=... RPC_URL=... PRIVATE_KEY=... CONTRACT_ADDRESS=...
+    git push heroku master
+
+Use a public URL for IMAGE_PUBLIC_URL. Uploaded images are stored on Heroku's ephemeral filesystem, so they are not retained after a dyno restart.
