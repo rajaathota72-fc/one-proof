@@ -3,12 +3,12 @@ Run: python app.py, then open http://127.0.0.1:5000
 """
 import os
 import traceback
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 
 from scripts.face_id import encode_face, face_hash
 from scripts.reverse_search import search_image
-from scripts.blockchain_verify import mint_badge, reverify
+from scripts.blockchain_verify import mint_badge, reverify, get_web3
 
 load_dotenv()
 
@@ -17,14 +17,16 @@ UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "static", "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def index():
-    if request.method == "GET":
-        return render_template("index.html", result=None, error=None)
+    return render_template("index.html")
 
+
+@app.route("/api/verify", methods=["POST"])
+def api_verify():
     file = request.files.get("image")
     if not file or file.filename == "":
-        return render_template("index.html", result=None, error="Pick an image first.")
+        return jsonify({"error": "Pick an image first."}), 400
 
     image_path = os.path.join(UPLOAD_DIR, file.filename)
     file.save(image_path)
@@ -35,29 +37,32 @@ def index():
 
         matches = search_image(image_path)
         if not matches:
-            return render_template("index.html", result=None,
-                                    error="No matching post found on the web for this face.")
+            return jsonify({"error": "No matching post found on the web for this face."}), 404
         top = matches[0]
         post_content = f"{top['title']} | {top['snippet']}"
 
         token_id = mint_badge(fhash, top["url"], post_content)
         verified = reverify(token_id, fhash, top["url"], post_content)
 
+        w3 = get_web3()
+        wallet_address = w3.eth.account.from_key(os.environ["PRIVATE_KEY"]).address
         contract_address = os.environ.get("CONTRACT_ADDRESS", "")
-        result = {
+
+        return jsonify({
             "image_url": f"/static/uploads/{file.filename}",
             "face_hash": fhash,
             "match_url": top["url"],
             "match_title": top["title"],
             "token_id": token_id,
             "verified": verified,
+            "wallet_address": wallet_address,
+            "contract_address": contract_address,
             "etherscan_url": f"https://sepolia.etherscan.io/address/{contract_address}" if contract_address else None,
-        }
-        return render_template("index.html", result=result, error=None)
+        })
 
     except Exception as e:
         traceback.print_exc()
-        return render_template("index.html", result=None, error=str(e))
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":

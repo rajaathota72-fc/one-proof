@@ -55,6 +55,7 @@
       box-shadow: 0 20px 60px -20px rgba(0,0,0,.6);
     }
 
+    /* ---------- upload form ---------- */
     .drop {
       border: 1.5px dashed var(--border);
       border-radius: 14px;
@@ -63,8 +64,6 @@
       color: var(--muted);
       cursor: pointer;
       transition: border-color .15s, background .15s;
-      position: relative;
-      overflow: hidden;
     }
     .drop:hover, .drop.dragover { border-color: var(--accent); background: rgba(109,94,248,.05); }
     .drop input { display: none; }
@@ -81,7 +80,7 @@
       border: 1px solid var(--border);
     }
 
-    button {
+    button.primary {
       width: 100%;
       margin-top: 16px;
       padding: 13px;
@@ -98,71 +97,133 @@
       gap: 8px;
       transition: opacity .15s, transform .1s;
     }
-    button:hover { opacity: 0.92; }
-    button:active { transform: scale(.99); }
-    button:disabled { opacity: .7; cursor: progress; }
+    button.primary:hover { opacity: 0.92; }
+    button.primary:active { transform: scale(.99); }
+    button.primary:disabled { opacity: .6; cursor: progress; }
+
+    button.ghost {
+      width: 100%;
+      margin-top: 12px;
+      padding: 11px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.ghost:hover { color: var(--text); border-color: var(--muted); }
 
     .spinner {
-      display: none;
       width: 15px; height: 15px;
       border: 2px solid rgba(255,255,255,.35);
       border-top-color: #fff;
       border-radius: 50%;
       animation: spin .7s linear infinite;
+      flex-shrink: 0;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .steps {
-      margin-top: 28px;
+    /* ---------- progress ---------- */
+    #progress { margin-top: 22px; display: none; flex-direction: column; gap: 10px; }
+    .p-step {
       display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .step {
-      display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 12px;
-      padding: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
       background: var(--panel2);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      opacity: 0;
-      transform: translateY(6px);
-      animation: rise .4s ease forwards;
+      opacity: .45;
+      transition: opacity .2s, border-color .2s;
+      font-size: 13.5px;
     }
-    .step:nth-child(2) { animation-delay: .05s; }
-    .step:nth-child(3) { animation-delay: .15s; }
-    .step:nth-child(4) { animation-delay: .25s; }
-    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
-
-    .step .num {
+    .p-step.active { opacity: 1; border-color: rgba(109,94,248,.4); }
+    .p-step.done { opacity: 1; border-color: rgba(41,208,160,.35); }
+    .p-icon {
+      width: 20px; height: 20px;
       flex-shrink: 0;
-      width: 24px; height: 24px;
       border-radius: 50%;
-      background: var(--accent2);
-      color: #06231b;
-      font-size: 12px;
-      font-weight: 700;
       display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      background: #20232d;
+      color: var(--muted);
     }
-    .step .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
-    .step .value { font-size: 14px; word-break: break-all; margin-top: 3px; }
-    .step .value a { color: var(--accent2); text-decoration: none; }
-    .step .value a:hover { text-decoration: underline; }
-    .step .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; color: var(--text); }
+    .p-step.active .p-icon { background: var(--accent); color: #fff; }
+    .p-step.done .p-icon { background: var(--accent2); color: #06231b; }
+    .p-step.active .p-icon .spinner { width: 11px; height: 11px; border-width: 2px; }
 
-    .badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 6px;
-      padding: 5px 11px;
-      border-radius: 999px;
-      font-size: 12px;
+    /* ---------- result ---------- */
+    #result { display: none; }
+    .result-title {
+      text-align: center;
+      color: var(--accent2);
+      font-size: 13px;
       font-weight: 600;
+      margin: 4px 0 18px;
+      letter-spacing: .02em;
     }
-    .badge-pill.ok { background: rgba(41,208,160,.12); color: var(--accent2); }
-    .badge-pill.fail { background: rgba(255,107,107,.12); color: var(--danger); }
+
+    .badge-card {
+      background: linear-gradient(160deg, #1a1530 0%, #0f1117 60%);
+      border: 1px solid rgba(109,94,248,.35);
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .badge-card::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 100% 0%, rgba(109,94,248,.25), transparent 55%);
+      pointer-events: none;
+    }
+    .badge-card img {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent2);
+      flex-shrink: 0;
+    }
+    .badge-card .bname { font-size: 16px; font-weight: 700; }
+    .badge-card .bsub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .badge-card .bverified {
+      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 8px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(41,208,160,.15);
+      color: var(--accent2);
+    }
+
+    .details {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .detail {
+      padding: 12px 14px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .detail .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; display: flex; justify-content: space-between; align-items: center; }
+    .detail .value { font-size: 13.5px; margin-top: 4px; word-break: break-all; }
+    .detail .value a { color: var(--accent2); text-decoration: none; }
+    .detail .value a:hover { text-decoration: underline; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
+    .copy-btn {
+      background: none; border: none; color: var(--muted);
+      font-size: 11px; cursor: pointer; padding: 0;
+    }
+    .copy-btn:hover { color: var(--accent2); }
 
     .error {
       margin-top: 20px;
@@ -172,26 +233,7 @@
       border: 1px solid rgba(255,107,107,.3);
       color: var(--danger);
       font-size: 14px;
-    }
-
-    .preview {
-      opacity: 0; transform: translateY(6px);
-      animation: rise .4s ease forwards;
-    }
-    .preview img {
-      width: 100%;
-      border-radius: 14px;
-      margin-bottom: 4px;
-      border: 1px solid var(--border);
-    }
-
-    .result-title {
-      text-align: center;
-      color: var(--accent2);
-      font-size: 13px;
-      font-weight: 600;
-      margin: 16px 0 4px;
-      letter-spacing: .02em;
+      display: none;
     }
 
     footer { text-align: center; margin-top: 24px; color: var(--muted); font-size: 12px; }
@@ -205,7 +247,7 @@
     </header>
 
     <div class="card">
-      <form method="POST" enctype="multipart/form-data" id="form">
+      <form id="form">
         <label class="drop" for="image" id="dropzone">
           <img class="preview-thumb" id="thumb" alt="preview">
           <div class="icon">📷</div>
@@ -214,53 +256,51 @@
           <div class="hint">JPG / PNG · a clear front-facing face works best</div>
           <input type="file" name="image" id="image" accept="image/*" required>
         </label>
-        <button type="submit" id="btn">
-          <span class="spinner" id="spinner"></span>
+        <button type="submit" class="primary" id="btn">
           <span id="btnLabel">Verify &amp; Mint Badge</span>
         </button>
       </form>
 
-      {% if error %}
-      <div class="error">{{ error }}</div>
-      {% endif %}
-
-      {% if result %}
-      <div class="result-title">✓ Pipeline complete</div>
-      <div class="steps">
-        <div class="preview"><img src="{{ result.image_url }}" alt="scanned face"></div>
-
-        <div class="step">
-          <div class="num">1</div>
-          <div>
-            <div class="label">Face hash (SHA-256)</div>
-            <div class="value mono">{{ result.face_hash }}</div>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="num">2</div>
-          <div>
-            <div class="label">Matching post found</div>
-            <div class="value"><a href="{{ result.match_url }}" target="_blank">{{ result.match_title }}</a></div>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="num">3</div>
-          <div>
-            <div class="label">Soulbound badge · token #{{ result.token_id }}</div>
-            <div class="badge-pill {{ 'ok' if result.verified else 'fail' }}">
-              {{ '✓ Verified on-chain' if result.verified else '✗ Verification mismatch' }}
-            </div>
-            {% if result.etherscan_url %}
-            <div class="value" style="margin-top:8px;">
-              <a href="{{ result.etherscan_url }}" target="_blank">View contract on Sepolia Etherscan →</a>
-            </div>
-            {% endif %}
-          </div>
-        </div>
+      <div id="progress">
+        <div class="p-step" id="p1"><div class="p-icon">1</div><div>Detecting &amp; encoding face…</div></div>
+        <div class="p-step" id="p2"><div class="p-icon">2</div><div>Searching the web for a matching post…</div></div>
+        <div class="p-step" id="p3"><div class="p-icon">3</div><div>Minting soulbound badge on Sepolia…</div></div>
       </div>
-      {% endif %}
+
+      <div class="error" id="error"></div>
+
+      <div id="result">
+        <div class="result-title">✓ Pipeline complete</div>
+
+        <div class="badge-card">
+          <img id="resultImg" alt="scanned face">
+          <div>
+            <div class="bname">Proof of Human <span id="tokenId"></span></div>
+            <div class="bsub">Non-transferable · minted to <span id="walletShort" class="mono"></span></div>
+            <div class="bverified" id="verifiedPill"></div>
+          </div>
+        </div>
+
+        <div class="details">
+          <div class="detail">
+            <div class="label">
+              Face hash (SHA-256)
+              <button class="copy-btn" onclick="copyText('faceHash')">copy</button>
+            </div>
+            <div class="value mono" id="faceHash"></div>
+          </div>
+          <div class="detail">
+            <div class="label">Matching post found</div>
+            <div class="value"><a id="matchLink" target="_blank"></a></div>
+          </div>
+          <div class="detail">
+            <div class="label">On-chain record</div>
+            <div class="value"><a id="etherscanLink" target="_blank">View contract on Sepolia Etherscan →</a></div>
+          </div>
+        </div>
+
+        <button class="ghost" id="resetBtn">Verify another photo</button>
+      </div>
     </div>
 
     <footer>Verifai · HH Goa 2026 · non-transferable badge, minted once per wallet</footer>
@@ -274,23 +314,21 @@
     const thumb = document.getElementById('thumb');
     const form = document.getElementById('form');
     const btn = document.getElementById('btn');
-    const spinner = document.getElementById('spinner');
     const btnLabel = document.getElementById('btnLabel');
+    const progress = document.getElementById('progress');
+    const errorBox = document.getElementById('error');
+    const resultBox = document.getElementById('result');
 
     function showFile(file) {
       if (!file) return;
       filename.textContent = file.name;
       dropText.textContent = 'Photo selected';
       const reader = new FileReader();
-      reader.onload = e => {
-        thumb.src = e.target.result;
-        thumb.style.display = 'block';
-      };
+      reader.onload = e => { thumb.src = e.target.result; thumb.style.display = 'block'; };
       reader.readAsDataURL(file);
     }
 
     input.addEventListener('change', () => showFile(input.files[0]));
-
     ['dragover', 'dragenter'].forEach(evt =>
       dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.add('dragover'); })
     );
@@ -302,10 +340,84 @@
       if (file) { input.files = e.dataTransfer.files; showFile(file); }
     });
 
-    form.addEventListener('submit', () => {
-      btn.disabled = true;
-      spinner.style.display = 'inline-block';
-      btnLabel.textContent = 'Verifying on-chain…';
+    function setStep(n, state) {
+      const el = document.getElementById('p' + n);
+      el.classList.remove('active', 'done');
+      if (state) el.classList.add(state);
+      el.querySelector('.p-icon').innerHTML = state === 'active'
+        ? '<span class="spinner"></span>'
+        : state === 'done' ? '✓' : n;
+    }
+
+    function copyText(id) {
+      navigator.clipboard.writeText(document.getElementById(id).textContent);
+    }
+
+    function short(addr) { return addr ? addr.slice(0, 6) + '…' + addr.slice(-4) : ''; }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!input.files[0]) return;
+
+      form.style.display = 'none';
+      errorBox.style.display = 'none';
+      resultBox.style.display = 'none';
+      progress.style.display = 'flex';
+      [1, 2, 3].forEach(n => setStep(n, null));
+      setStep(1, 'active');
+
+      const formData = new FormData();
+      formData.append('image', input.files[0]);
+
+      // stagger the visual progression so each step reads before the next appears
+      const t1 = setTimeout(() => { setStep(1, 'done'); setStep(2, 'active'); }, 1200);
+      const t2 = setTimeout(() => { setStep(2, 'done'); setStep(3, 'active'); }, 3200);
+
+      try {
+        const resp = await fetch('/api/verify', { method: 'POST', body: formData });
+        const data = await resp.json();
+
+        clearTimeout(t1); clearTimeout(t2);
+        setStep(1, 'done'); setStep(2, 'done'); setStep(3, 'done');
+
+        if (!resp.ok) throw new Error(data.error || 'Something went wrong.');
+
+        setTimeout(() => {
+          progress.style.display = 'none';
+          document.getElementById('resultImg').src = data.image_url;
+          document.getElementById('tokenId').textContent = '#' + data.token_id;
+          document.getElementById('walletShort').textContent = short(data.wallet_address);
+          document.getElementById('verifiedPill').textContent = data.verified ? '✓ Verified on-chain' : '✗ Mismatch';
+          document.getElementById('faceHash').textContent = data.face_hash;
+          const matchLink = document.getElementById('matchLink');
+          matchLink.href = data.match_url;
+          matchLink.textContent = data.match_title || data.match_url;
+          const eth = document.getElementById('etherscanLink');
+          if (data.etherscan_url) { eth.href = data.etherscan_url; eth.parentElement.parentElement.style.display = 'block'; }
+          else { eth.parentElement.parentElement.style.display = 'none'; }
+          resultBox.style.display = 'block';
+        }, 500);
+
+      } catch (err) {
+        clearTimeout(t1); clearTimeout(t2);
+        progress.style.display = 'none';
+        form.style.display = 'block';
+        btn.disabled = false;
+        btnLabel.textContent = 'Verify & Mint Badge';
+        errorBox.textContent = err.message;
+        errorBox.style.display = 'block';
+      }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      resultBox.style.display = 'none';
+      form.style.display = 'block';
+      form.reset();
+      thumb.style.display = 'none';
+      dropText.textContent = 'Click or drag a photo here';
+      filename.textContent = '';
+      btn.disabled = false;
+      btnLabel.textContent = 'Verify & Mint Badge';
     });
   </script>
 </body>
