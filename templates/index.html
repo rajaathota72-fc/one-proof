@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Verifai — Proof of Human</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --panel: #14171f;
+      --border: #262a35;
+      --text: #e8eaf0;
+      --muted: #8a8f9c;
+      --accent: #6d5ef8;
+      --accent2: #29d0a0;
+      --danger: #ff6b6b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #171a24 0%, var(--bg) 60%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 48px 20px;
+    }
+    .wrap { width: 100%; max-width: 560px; }
+    header { text-align: center; margin-bottom: 32px; }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .logo .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+    }
+    header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .drop {
+      border: 1.5px dashed var(--border);
+      border-radius: 12px;
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color .15s;
+    }
+    .drop:hover { border-color: var(--accent); }
+    .drop input { display: none; }
+    .drop .filename { margin-top: 8px; color: var(--text); font-size: 13px; }
+
+    button {
+      width: 100%;
+      margin-top: 16px;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), #4a3ff0);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { opacity: 0.92; }
+
+    .steps {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      background: #0f1117;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .step .num {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--accent2);
+      color: #06231b;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+    .step .value { font-size: 14px; word-break: break-all; margin-top: 2px; }
+    .step .value a { color: var(--accent2); text-decoration: none; }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-pill.ok { background: rgba(41,208,160,.12); color: var(--accent2); }
+    .badge-pill.fail { background: rgba(255,107,107,.12); color: var(--danger); }
+
+    .error {
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(255,107,107,.08);
+      border: 1px solid rgba(255,107,107,.3);
+      color: var(--danger);
+      font-size: 14px;
+    }
+
+    .preview img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+
+    footer { text-align: center; margin-top: 24px; color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><span class="dot"></span>Verifai</div>
+      <p>Face scan &rarr; web match &rarr; soulbound Proof-of-Human badge</p>
+    </header>
+
+    <div class="card">
+      <form method="POST" enctype="multipart/form-data" onsubmit="document.getElementById('btn').innerText='Verifying…'">
+        <label class="drop" for="image">
+          <div>Click to choose a photo</div>
+          <div class="filename" id="filename"></div>
+          <input type="file" name="image" id="image" accept="image/*" required
+                 onchange="document.getElementById('filename').innerText=this.files[0]?.name || ''">
+        </label>
+        <button type="submit" id="btn">Verify &amp; Mint Badge</button>
+      </form>
+
+      {% if error %}
+      <div class="error">{{ error }}</div>
+      {% endif %}
+
+      {% if result %}
+      <div class="steps">
+        <div class="preview"><img src="{{ result.image_url }}" alt="scanned face"></div>
+
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <div class="label">Face hash (SHA-256)</div>
+            <div class="value">{{ result.face_hash }}</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <div class="label">Matching post found</div>
+            <div class="value"><a href="{{ result.match_url }}" target="_blank">{{ result.match_title }}</a></div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <div class="label">Soulbound badge · token #{{ result.token_id }}</div>
+            <div class="badge-pill {{ 'ok' if result.verified else 'fail' }}">
+              {{ '✓ Verified on-chain' if result.verified else '✗ Verification mismatch' }}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <footer>Verifai · HH Goa 2026 · non-transferable badge, minted once per wallet</footer>
+  </div>
+</body>
+</html>

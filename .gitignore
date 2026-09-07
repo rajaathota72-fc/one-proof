@@ -5,3 +5,5 @@ __pycache__/
 venv/
 .venv/
 .claude/
+static/uploads/*
+!static/uploads/.gitkeep

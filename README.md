@@ -1,4 +1,4 @@
-# Face Identification & Blockchain Verification
+# Verifai — Proof of Human
 
 HH Goa 2026 — Task 3.
 
@@ -60,11 +60,18 @@ python scripts/reverse_search.py sample_images/input.jpg
 python scripts/blockchain_verify.py <face_hash> <post_url> <post_content>
 ```
 
+### Web UI
+
+```bash
+python app.py
+```
+Open `http://127.0.0.1:5000`, upload a photo, watch the 3 steps run and the badge get minted.
+
 ## Limitations
 
 - Google Lens needs a public image URL, not a local file.
 - Reverse search can return false positives (lookalikes, edited photos) — not guaranteed identity match.
 - One badge per wallet (by design — re-minting to the same wallet reverts).
 - Local Ganache resets on restart; use a testnet for persistent record.
-- CLI only, no website (per task requirements).
+- Small Flask UI included for demo purposes (task doesn't require a hosted website).
 - dlib install can be slow on macOS/ARM.
