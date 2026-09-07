@@ -47,19 +47,35 @@
       font-size: 13px; font-weight: 800;
     }
     .header-links { display: flex; align-items: center; gap: 26px; font-size: 14px; color: var(--muted); }
+    .header-links a { position: relative; padding-bottom: 2px; }
+    .header-links a::after {
+      content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px;
+      background: var(--ink); transition: right .25s cubic-bezier(.23,.65,.74,1.09);
+    }
     .header-links a:hover { color: var(--ink); }
+    .header-links a:hover::after { right: 0; }
+
+    /* pill buttons with a fill that slides up from the bottom on hover */
     .btn-pill {
       height: 46px; padding: 0 22px; border-radius: 999px;
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 14px; font-weight: 600; text-decoration: none;
       border: 1.5px solid var(--ink); color: var(--ink);
-      transition: background .18s, color .18s, transform .12s;
+      position: relative; overflow: hidden; isolation: isolate;
+      transition: color .3s ease .05s, transform .12s;
     }
-    .btn-pill:hover { background: var(--ink); color: var(--paper); transform: translateY(-1px); }
+    .btn-pill::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      background: var(--ink); transform: translateY(102%);
+      transition: transform .3s cubic-bezier(.23,.65,.74,1.09);
+    }
+    .btn-pill:hover { color: var(--paper); transform: translateY(-1px); }
+    .btn-pill:hover::before { transform: translateY(0); }
     .btn-pill.filled { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-    .btn-pill.filled:hover { background: var(--ink2); }
+    .btn-pill.filled::before { background: var(--ink2); }
     .btn-pill.accent { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-    .btn-pill.accent:hover { background: #8f78e0; color: var(--accent-ink); }
+    .btn-pill.accent::before { background: #8f78e0; }
+    .btn-pill.accent:hover { color: var(--accent-ink); }
 
     /* ---------- hero ---------- */
     .hero { max-width: 1000px; margin: 0 auto; padding: 80px 24px 0; }
@@ -129,11 +145,22 @@
     .mchip .mdot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
 
     /* ---------- sections ---------- */
-    section { padding: 90px 24px; }
-    .section-head { margin-bottom: 44px; }
-    .section-head .eyebrow { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; }
-    .section-head h2 { font-size: clamp(28px, 4vw, 38px); font-weight: 700; letter-spacing: -1px; margin: 10px 0 12px; }
+    /* split label-column layout: eyebrow pinned left, heading+copy right (their "name + manifest" grid) */
+    section { padding: 90px 24px; border-top: 1px solid var(--line); }
+    section:first-of-type { border-top: none; }
+    .section-head {
+      display: grid; grid-template-columns: 200px 1fr; gap: 24px;
+      margin-bottom: 44px; align-items: start;
+    }
+    .section-head .eyebrow {
+      font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .1em;
+      padding-top: 4px;
+    }
+    .section-head h2 { font-size: clamp(28px, 4vw, 38px); font-weight: 700; letter-spacing: -1px; margin: 0 0 12px; }
     .section-head p { color: var(--muted); font-size: 15px; max-width: 480px; margin: 0; }
+    @media (max-width: 640px) {
+      .section-head { grid-template-columns: 1fr; gap: 10px; }
+    }
 
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
     .reveal.in-view { opacity: 1; transform: translateY(0); }
@@ -145,35 +172,61 @@
     }
     .uc-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 16px 30px -18px rgba(159,139,231,.5); }
     .uc-card .icon {
-      width: 42px; height: 42px; border-radius: 12px; background: var(--paper3);
-      display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px;
+      width: 34px; height: 34px; border-radius: 10px; background: var(--ink);
+      color: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; margin-bottom: 16px;
+      font-family: ui-monospace, monospace;
     }
     .uc-card h3 { font-size: 17px; font-weight: 700; margin: 0 0 8px; }
     .uc-card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0; }
 
-    .steps-detail { display: flex; flex-direction: column; max-width: 660px; }
-    .step-detail {
-      display: flex; gap: 20px; align-items: flex-start;
-      padding: 26px 0; border-bottom: 1px dashed var(--line);
+    /* how it works: numbered timeline with a connecting rail */
+    .steps-detail { position: relative; max-width: 680px; }
+    .steps-detail::before {
+      content: ""; position: absolute; left: 17px; top: 18px; bottom: 18px; width: 1px;
+      background: repeating-linear-gradient(var(--line) 0 4px, transparent 4px 9px);
     }
-    .step-detail:last-child { border-bottom: none; }
+    .step-detail {
+      display: flex; gap: 22px; align-items: flex-start;
+      padding: 0 0 40px; position: relative;
+    }
+    .step-detail:last-child { padding-bottom: 0; }
     .step-detail .num {
       flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
       background: var(--ink); color: var(--lime);
       font-weight: 700; font-size: 15px;
       display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
     }
     .step-detail h4 { margin: 0 0 6px; font-size: 16.5px; font-weight: 700; }
-    .step-detail p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 480px; }
-
-    .stack-row { display: flex; flex-wrap: wrap; gap: 10px; }
-    .stack-chip {
-      background: var(--paper2); border: 1px solid var(--line); border-radius: 999px;
-      padding: 9px 18px; font-size: 13px; font-weight: 500; color: var(--muted);
-      transition: border-color .2s;
+    .step-detail p { margin: 0 0 10px; font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 480px; }
+    .step-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .step-tag {
+      font-size: 11px; font-weight: 600; color: var(--muted);
+      background: var(--paper3); border: 1px solid var(--line); border-radius: 999px;
+      padding: 3px 10px;
     }
-    .stack-chip:hover { border-color: var(--accent); }
-    .stack-chip b { color: var(--ink); }
+
+    /* tech stack grouped by pipeline layer */
+    .stack-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .stack-group {
+      background: var(--paper2); border: 1px solid var(--line); border-radius: 16px; padding: 20px;
+    }
+    .stack-group .glabel {
+      font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em;
+      margin-bottom: 12px;
+    }
+    .stack-group .gitem {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13.5px; font-weight: 600; color: var(--ink);
+      padding: 7px 0; border-top: 1px solid var(--line);
+    }
+    .stack-group .gitem:first-of-type { border-top: none; }
+    .stack-group .gitem span { font-weight: 400; color: var(--muted); font-size: 12.5px; }
+    @media (max-width: 760px) {
+      .stack-groups { grid-template-columns: 1fr; }
+    }
 
     .cta-band {
       text-align: center; padding: 70px 24px; margin: 10px auto 0; max-width: 1000px;
@@ -259,22 +312,22 @@
       </div>
       <div class="grid">
         <div class="uc-card reveal">
-          <div class="icon">💘</div>
+          <div class="icon">01</div>
           <h3>Dating apps</h3>
           <p>Stop catfishing before the first message. A verified badge proves the profile photo belongs to a real, findable person — not a stolen or AI-generated image.</p>
         </div>
         <div class="uc-card reveal">
-          <div class="icon">🏛️</div>
+          <div class="icon">02</div>
           <h3>DAOs &amp; governance</h3>
           <p>Sybil-resist voting and airdrops. One soulbound badge per wallet means one real human, one voice — no bot farms gaming quorum.</p>
         </div>
         <div class="uc-card reveal">
-          <div class="icon">💼</div>
+          <div class="icon">03</div>
           <h3>Freelance marketplaces</h3>
           <p>Clients hire real people with a real online track record, not throwaway accounts. The badge is the trust signal, checkable on-chain.</p>
         </div>
         <div class="uc-card reveal">
-          <div class="icon">🎮</div>
+          <div class="icon">04</div>
           <h3>Gaming &amp; communities</h3>
           <p>Gate whitelists, tournaments, or mod roles to verified humans — cutting down multi-accounting and bot abuse without collecting IDs.</p>
         </div>
@@ -295,6 +348,7 @@
           <div>
             <h4>Face detection &amp; encoding</h4>
             <p>Detects the face in your photo and encodes it into a 128-dimension vector, then hashes it (SHA-256) — the raw biometric never leaves your machine.</p>
+            <div class="step-tags"><span class="step-tag">face_recognition</span><span class="step-tag">dlib</span><span class="step-tag">SHA-256</span></div>
           </div>
         </div>
         <div class="step-detail reveal">
@@ -302,6 +356,7 @@
           <div>
             <h4>Real web / social search</h4>
             <p>Runs a genuine reverse-image search (Google Lens via SerpApi) against the live web to find an actual matching post — not a hardcoded result.</p>
+            <div class="step-tags"><span class="step-tag">Google Lens</span><span class="step-tag">SerpApi</span></div>
           </div>
         </div>
         <div class="step-detail reveal">
@@ -309,6 +364,7 @@
           <div>
             <h4>Soulbound badge minted on-chain</h4>
             <p>Hashes the matched post and mints a non-transferable NFT to your wallet on Sepolia, then re-reads it on-chain to prove the record hasn't been tampered with.</p>
+            <div class="step-tags"><span class="step-tag">Solidity</span><span class="step-tag">web3.py</span><span class="step-tag">Sepolia</span></div>
           </div>
         </div>
       </div>
@@ -321,13 +377,23 @@
         <div class="eyebrow">Built with</div>
         <h2>Tech stack</h2>
       </div>
-      <div class="stack-row reveal">
-        <div class="stack-chip"><b>face_recognition</b> · dlib</div>
-        <div class="stack-chip"><b>SerpApi</b> · Google Lens</div>
-        <div class="stack-chip"><b>Solidity</b> · soulbound ERC-721</div>
-        <div class="stack-chip"><b>web3.py</b> · Sepolia testnet</div>
-        <div class="stack-chip"><b>MetaMask</b> connect</div>
-        <div class="stack-chip"><b>Flask</b></div>
+      <div class="stack-groups reveal">
+        <div class="stack-group">
+          <div class="glabel">Vision</div>
+          <div class="gitem">face_recognition <span>face detect + encode</span></div>
+          <div class="gitem">dlib <span>128-d embeddings</span></div>
+        </div>
+        <div class="stack-group">
+          <div class="glabel">Search</div>
+          <div class="gitem">SerpApi <span>reverse image API</span></div>
+          <div class="gitem">Google Lens <span>real web matches</span></div>
+        </div>
+        <div class="stack-group">
+          <div class="glabel">Chain</div>
+          <div class="gitem">Solidity <span>soulbound ERC-721</span></div>
+          <div class="gitem">web3.py <span>Sepolia testnet</span></div>
+          <div class="gitem">MetaMask <span>wallet connect</span></div>
+        </div>
       </div>
     </div>
   </section>

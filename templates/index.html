@@ -117,7 +117,12 @@
       color: var(--muted);
       font-size: 12.5px;
     }
-    .wallet-gate .fox { font-size: 28px; margin-bottom: 8px; }
+    .wallet-gate .gate-mark {
+      width: 40px; height: 40px; margin: 0 auto 12px; border-radius: 10px;
+      background: var(--ink); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px;
+    }
     .wallet-gate button {
       margin-top: 14px;
       padding: 11px 24px;
@@ -394,7 +399,7 @@
       <div class="network-pill"><span class="ndot"></span>Sepolia Testnet</div>
 
       <div class="wallet-gate" id="walletGate">
-        <div class="fox">🦊</div>
+        <div class="gate-mark">M</div>
         <div>Connect your MetaMask wallet — your Proof-of-Human badge<br>will be minted directly to your own address.</div>
         <button id="connectBtn">Connect MetaMask</button>
       </div>
@@ -408,7 +413,6 @@
         <form id="form">
           <label class="drop" for="image" id="dropzone">
             <img class="preview-thumb" id="thumb" alt="preview">
-            <div class="icon">📷</div>
             <div id="dropText">Click or drag a photo here</div>
             <div class="filename" id="filename"></div>
             <div class="hint">JPG / PNG · a clear front-facing face works best</div>
@@ -646,7 +650,7 @@
           if (data.etherscan_url) { eth.href = data.etherscan_url; eth.parentElement.parentElement.style.display = 'block'; }
           else { eth.parentElement.parentElement.style.display = 'none'; }
           resultBox.style.display = 'block';
-          showToast('Badge #' + data.token_id + ' minted 🎉');
+          showToast('Badge #' + data.token_id + ' minted');
         }, 500);
 
       } catch (err) {
