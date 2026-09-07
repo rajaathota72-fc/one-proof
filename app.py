@@ -43,6 +43,7 @@ def index():
         token_id = mint_badge(fhash, top["url"], post_content)
         verified = reverify(token_id, fhash, top["url"], post_content)
 
+        contract_address = os.environ.get("CONTRACT_ADDRESS", "")
         result = {
             "image_url": f"/static/uploads/{file.filename}",
             "face_hash": fhash,
@@ -50,6 +51,7 @@ def index():
             "match_title": top["title"],
             "token_id": token_id,
             "verified": verified,
+            "etherscan_url": f"https://sepolia.etherscan.io/address/{contract_address}" if contract_address else None,
         }
         return render_template("index.html", result=result, error=None)
 

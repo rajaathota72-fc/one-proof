@@ -1,8 +1,8 @@
 """Step 2: reverse image search via SerpApi Google Lens. Needs SERPAPI_KEY env var.
 
 Google Lens needs a public image URL, not a local file. If IMAGE_PUBLIC_URL
-isn't set, the local image is auto-uploaded to a temporary public host
-(litterbox.catbox.moe, 1h expiry) so any uploaded photo works out of the box.
+isn't set, the local image is auto-uploaded to catbox.moe (permanent public
+host, no key needed) so any uploaded photo works out of the box.
 
 Swap search_image() for another provider (Bing Visual Search, PimEyes) if needed —
 pipeline just needs back a list of {url, title, snippet} dicts.
@@ -15,22 +15,23 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SERPAPI_ENDPOINT = "https://serpapi.com/search.json"
-LITTERBOX_ENDPOINT = "https://litterbox.catbox.moe/resources/internals/api.php"
+CATBOX_ENDPOINT = "https://catbox.moe/user/api.php"
 
 
 def upload_temp_public(image_path: str) -> str:
-    """Uploads a local image to a temporary public host, returns its URL."""
+    """Uploads a local image to catbox.moe, returns its public URL."""
     with open(image_path, "rb") as f:
         resp = requests.post(
-            LITTERBOX_ENDPOINT,
-            data={"reqtype": "fileupload", "time": "1h"},
+            CATBOX_ENDPOINT,
+            data={"reqtype": "fileupload"},
             files={"fileToUpload": f},
+            headers={"User-Agent": "Mozilla/5.0"},
             timeout=30,
         )
     resp.raise_for_status()
     url = resp.text.strip()
     if not url.startswith("http"):
-        raise RuntimeError(f"Temp upload failed: {url}")
+        raise RuntimeError(f"Public upload failed: {url}")
     return url
 
 
