@@ -4,16 +4,22 @@
   <meta charset="utf-8">
   <title>Verifai — Proof of Human</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400..800&family=Funnel+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --paper: #e8e5df;
-      --paper2: #f3f1ec;
-      --ink: #16150f;
-      --muted: #6b6a63;
-      --line: rgba(22,21,15,.16);
-      --accent: #ef9a67;
-      --accent-dark: #d97e4b;
-      --ok: #2f7a5c;
+      --paper: #FAF7F6;
+      --paper2: #FFFFFF;
+      --paper3: #F1EDEB;
+      --ink: #161616;
+      --ink2: #1C1C1C;
+      --muted: #585858;
+      --muted2: #838383;
+      --line: #E0DDDB;
+      --accent: #9F8BE7;
+      --accent-ink: #161616;
+      --lime: #DDF160;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -21,265 +27,213 @@
       margin: 0;
       background: var(--paper);
       color: var(--ink);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      position: relative;
-      overflow-x: hidden;
+      font-family: "Funnel Sans", sans-serif;
     }
-    body::before {
-      content: "";
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      opacity: .5; mix-blend-mode: multiply;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
-    }
+    h1, h2, h3, h4, .accent-font { font-family: "Funnel Display", sans-serif; }
     a { color: inherit; }
-    .container { max-width: 960px; margin: 0 auto; padding: 0 22px; position: relative; z-index: 1; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 
-    .hl {
-      background: var(--ink); color: var(--paper2);
-      padding: 1px 10px; border-radius: 3px;
-      display: inline-block;
+    /* ---------- header ---------- */
+    header.site {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1000px; margin: 0 auto; padding: 28px 24px 0;
     }
-
-    /* ---------- corner brackets (technical/blueprint motif) ---------- */
-    .brackets { position: relative; }
-    .brackets::before, .brackets::after,
-    .brackets .bl, .brackets .br {
-      content: ""; position: absolute; width: 14px; height: 14px;
-      border-color: var(--ink); border-style: solid; opacity: .55;
+    .logo { display: inline-flex; align-items: center; gap: 9px; font-size: 18px; font-weight: 700; letter-spacing: -.3px; }
+    .logo .mark {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: var(--ink); color: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800;
     }
-    .brackets::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-    .brackets::after { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
-    .brackets .bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
-    .brackets .br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
-
-    /* ---------- nav ---------- */
-    .nav-wrap { position: sticky; top: 16px; z-index: 20; display: flex; justify-content: center; padding: 0 16px; }
-    nav {
-      display: flex; align-items: center; gap: 22px;
-      background: var(--ink); color: var(--paper2);
-      border-radius: 999px; padding: 10px 10px 10px 18px;
-      box-shadow: 0 12px 30px -14px rgba(0,0,0,.4);
-      max-width: 720px; width: 100%;
+    .header-links { display: flex; align-items: center; gap: 26px; font-size: 14px; color: var(--muted); }
+    .header-links a:hover { color: var(--ink); }
+    .btn-pill {
+      height: 46px; padding: 0 22px; border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600; text-decoration: none;
+      border: 1.5px solid var(--ink); color: var(--ink);
+      transition: background .18s, color .18s, transform .12s;
     }
-    .logo { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 800; letter-spacing: -.3px; margin-right: auto; }
-    .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-    .nav-links { display: flex; align-items: center; gap: 18px; font-size: 13px; color: #b9b7ae; }
-    .nav-links a:hover { color: #fff; }
-    .nav-cta {
-      padding: 8px 16px; border-radius: 999px;
-      background: var(--accent); color: var(--ink);
-      font-weight: 700; font-size: 12.5px; text-decoration: none;
-      transition: background .15s;
-    }
-    .nav-cta:hover { background: #f5b384; }
+    .btn-pill:hover { background: var(--ink); color: var(--paper); transform: translateY(-1px); }
+    .btn-pill.filled { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .btn-pill.filled:hover { background: var(--ink2); }
+    .btn-pill.accent { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+    .btn-pill.accent:hover { background: #8f78e0; color: var(--accent-ink); }
 
     /* ---------- hero ---------- */
-    .hero { display: flex; align-items: center; gap: 40px; max-width: 960px; margin: 0 auto; padding: 70px 22px 40px; position: relative; z-index: 1; }
-    .hero-text { flex: 1.2; }
-    .eyebrow-row { display: flex; align-items: center; gap: 8px; margin-bottom: 22px; }
-    .eyebrow-tag {
-      font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-      color: var(--muted); border: 1px solid var(--line); border-radius: 999px;
-      padding: 5px 12px; background: var(--paper2);
+    .hero { max-width: 1000px; margin: 0 auto; padding: 80px 24px 0; }
+    .kicker {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12.5px; font-weight: 600; color: var(--muted);
+      border: 1px solid var(--line); border-radius: 999px;
+      padding: 6px 14px; margin-bottom: 28px;
     }
-    .eyebrow-tag b { color: var(--ok); }
-    .hero-text h1 {
-      font-size: 50px; font-weight: 800; letter-spacing: -1.6px; line-height: 1.1;
-      margin: 0 0 20px;
+    .kicker .kdot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .hero h1 {
+      font-weight: 700; letter-spacing: -2.5px; line-height: .98; margin: 0;
+      font-size: clamp(46px, 8vw, 96px);
     }
-    .hero-text p.sub { font-size: 16px; color: var(--muted); max-width: 480px; line-height: 1.6; margin: 0 0 30px; }
-    .hero-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn-primary {
-      padding: 14px 26px; border-radius: 10px;
-      background: var(--accent); color: var(--ink);
-      font-weight: 700; font-size: 14.5px; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 8px;
-      transition: transform .15s, background .15s;
-      box-shadow: 0 10px 26px -12px rgba(217,126,75,.6);
+    .hero h1 .row { display: block; }
+    .hero h1 .accent { color: var(--accent); }
+    .hero .sub {
+      margin-top: 30px; font-size: 18px; color: var(--muted); max-width: 520px; line-height: 1.6;
     }
-    .btn-primary:hover { transform: translateY(-2px); background: #f5b384; }
-    .btn-secondary {
-      padding: 14px 22px; border-radius: 10px;
-      border: 1.5px solid var(--ink); color: var(--ink);
-      font-weight: 700; font-size: 14.5px; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 8px;
-      transition: background .15s, transform .15s;
+    .hero-ctas { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+    .btn-lg {
+      height: 56px; padding: 0 30px; border-radius: 999px;
+      font-size: 15.5px; font-weight: 600;
     }
-    .btn-secondary:hover { background: rgba(22,21,15,.06); transform: translateY(-2px); }
 
-    /* schematic hero visual */
-    .hero-visual { flex: .9; display: flex; justify-content: center; }
-    .schematic {
-      width: 280px; background: var(--paper2);
-      border: 1.5px solid var(--line); border-radius: 4px;
-      padding: 16px; position: relative;
+    /* bottom hero data row */
+    .hero-data {
+      display: flex; align-items: center; gap: 22px;
+      margin-top: 64px; padding-top: 26px; border-top: 1px dashed var(--line);
+      flex-wrap: wrap;
     }
-    .schematic .cap {
-      font-size: 9.5px; letter-spacing: .07em; color: var(--muted);
-      text-transform: uppercase; line-height: 1.5; margin-bottom: 14px;
-    }
-    .radar { position: relative; width: 220px; height: 220px; margin: 0 auto; }
-    .ring { position: absolute; border: 1px solid var(--line); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); }
-    .ring1 { width: 220px; height: 220px; }
-    .ring2 { width: 165px; height: 165px; }
-    .ring3 { width: 110px; height: 110px; }
-    .ring4 { width: 55px; height: 55px; }
-    .radar-center {
+    .rot-badge { position: relative; width: 74px; height: 74px; flex-shrink: 0; }
+    .rot-badge svg { width: 100%; height: 100%; animation: spin 9s linear infinite; }
+    .rot-badge text { font-size: 8.4px; letter-spacing: 1px; fill: var(--muted2); text-transform: uppercase; }
+    .rot-badge .center-dot {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 34px; height: 34px; border-radius: 50%;
-      background: var(--ink); color: var(--paper2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px; font-weight: 800;
-      animation: pulseCenter 2.4s ease-in-out infinite;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--ink); color: var(--lime);
+      display: flex; align-items: center; justify-content: center; font-size: 13px;
     }
-    @keyframes pulseCenter { 0%,100% { box-shadow: 0 0 0 0 rgba(239,154,103,.5); } 50% { box-shadow: 0 0 0 14px rgba(239,154,103,0); } }
-    .radar-dot {
-      position: absolute; width: 7px; height: 7px; border-radius: 50%;
-      background: var(--accent-dark);
-      animation: orbit 10s linear infinite;
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hero-data p { margin: 0; font-size: 14px; color: var(--muted); max-width: 380px; line-height: 1.55; }
+    .hero-data .pipe { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+    .pipe-chip {
+      font-size: 12px; font-weight: 600; color: var(--ink);
+      background: var(--paper3); border: 1px solid var(--line); border-radius: 999px;
+      padding: 6px 13px; display: flex; align-items: center; gap: 6px;
     }
-    .radar-dot.d2 { animation-duration: 16s; animation-direction: reverse; }
-    @keyframes orbit {
-      from { transform: rotate(0deg) translateX(95px) rotate(0deg); }
-      to { transform: rotate(360deg) translateX(95px) rotate(-360deg); }
+    .pipe-chip b {
+      width: 16px; height: 16px; border-radius: 50%; background: var(--ink); color: var(--lime);
+      font-size: 9px; display: flex; align-items: center; justify-content: center;
     }
-    .radar-dot { top: 50%; left: 50%; margin: -3.5px; }
-    .schematic .readout {
-      display: flex; justify-content: space-between; margin-top: 14px;
-      font-size: 10.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px;
-    }
-    .schematic .readout b { color: var(--ink); }
 
     /* ---------- marquee ---------- */
     .marquee-wrap {
-      margin-top: 46px; overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-      background: var(--paper2); position: relative; z-index: 1;
+      margin-top: 56px; overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      background: var(--paper3);
     }
-    .marquee-track { display: flex; gap: 0; width: max-content; animation: marquee 24s linear infinite; }
+    .marquee-track { display: flex; width: max-content; animation: marquee 26s linear infinite; }
     @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     .mchip {
-      display: flex; align-items: center; gap: 8px;
-      padding: 12px 22px; font-size: 11.5px; color: var(--muted);
-      text-transform: uppercase; letter-spacing: .05em; white-space: nowrap;
-      border-right: 1px solid var(--line);
+      display: flex; align-items: center; gap: 9px;
+      padding: 13px 24px; font-size: 12.5px; color: var(--muted); font-weight: 500;
+      white-space: nowrap; border-right: 1px solid var(--line);
     }
     .mchip b { color: var(--ink); }
-    .mchip .mdot { width: 5px; height: 5px; border-radius: 50%; background: var(--ok); }
+    .mchip .mdot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
 
     /* ---------- sections ---------- */
-    section { padding: 72px 22px; position: relative; z-index: 1; }
-    .section-head { margin-bottom: 40px; }
-    .section-head .eyebrow { font-size: 11px; font-weight: 700; color: var(--ok); text-transform: uppercase; letter-spacing: .08em; }
-    .section-head h2 { font-size: 30px; font-weight: 800; letter-spacing: -.8px; margin: 8px 0 10px; }
-    .section-head p { color: var(--muted); font-size: 14.5px; max-width: 480px; margin: 0; }
+    section { padding: 90px 24px; }
+    .section-head { margin-bottom: 44px; }
+    .section-head .eyebrow { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; }
+    .section-head h2 { font-size: clamp(28px, 4vw, 38px); font-weight: 700; letter-spacing: -1px; margin: 10px 0 12px; }
+    .section-head p { color: var(--muted); font-size: 15px; max-width: 480px; margin: 0; }
 
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
     .reveal.in-view { opacity: 1; transform: translateY(0); }
 
-    /* use cases */
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .uc-card {
-      background: var(--paper2); border: 1.5px solid var(--line); border-radius: 6px;
-      padding: 22px; position: relative; transition: border-color .2s, transform .15s;
+      background: var(--paper2); border: 1px solid var(--line); border-radius: 20px;
+      padding: 26px; transition: border-color .2s, transform .15s, box-shadow .2s;
     }
-    .uc-card:hover { border-color: var(--ink); transform: translateY(-2px); }
-    .uc-card .icon { font-size: 24px; margin-bottom: 12px; display: inline-block; }
-    .uc-card h3 { font-size: 16px; font-weight: 800; margin: 0 0 8px; }
-    .uc-card p { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin: 0; }
+    .uc-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 16px 30px -18px rgba(159,139,231,.5); }
+    .uc-card .icon {
+      width: 42px; height: 42px; border-radius: 12px; background: var(--paper3);
+      display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px;
+    }
+    .uc-card h3 { font-size: 17px; font-weight: 700; margin: 0 0 8px; }
+    .uc-card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0; }
 
-    /* how it works */
-    .steps-detail { display: flex; flex-direction: column; gap: 0; max-width: 640px; }
+    .steps-detail { display: flex; flex-direction: column; max-width: 660px; }
     .step-detail {
-      display: flex; gap: 18px; align-items: flex-start;
-      padding: 22px 0; border-bottom: 1px solid var(--line);
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 26px 0; border-bottom: 1px dashed var(--line);
     }
     .step-detail:last-child { border-bottom: none; }
     .step-detail .num {
-      flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
-      border: 1.5px solid var(--ink); color: var(--ink);
-      font-weight: 800; font-size: 13px;
+      flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+      background: var(--ink); color: var(--lime);
+      font-weight: 700; font-size: 15px;
       display: flex; align-items: center; justify-content: center;
     }
-    .step-detail h4 { margin: 0 0 5px; font-size: 15.5px; font-weight: 800; }
-    .step-detail p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.55; max-width: 480px; }
+    .step-detail h4 { margin: 0 0 6px; font-size: 16.5px; font-weight: 700; }
+    .step-detail p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 480px; }
 
-    /* tech stack */
     .stack-row { display: flex; flex-wrap: wrap; gap: 10px; }
     .stack-chip {
-      background: var(--paper2); border: 1.5px solid var(--line); border-radius: 999px;
-      padding: 8px 16px; font-size: 12.5px; font-weight: 600; color: var(--muted);
+      background: var(--paper2); border: 1px solid var(--line); border-radius: 999px;
+      padding: 9px 18px; font-size: 13px; font-weight: 500; color: var(--muted);
       transition: border-color .2s;
     }
-    .stack-chip:hover { border-color: var(--ink); }
+    .stack-chip:hover { border-color: var(--accent); }
     .stack-chip b { color: var(--ink); }
 
-    /* inverted CTA band */
     .cta-band {
-      text-align: center; padding: 64px 22px; margin: 10px auto 0; max-width: 960px;
-      background: var(--ink); color: var(--paper2);
-      border-radius: 10px; position: relative; z-index: 1;
+      text-align: center; padding: 70px 24px; margin: 10px auto 0; max-width: 1000px;
+      background: var(--ink); color: var(--paper);
+      border-radius: 28px;
     }
-    .cta-band h2 { font-size: 28px; font-weight: 800; margin: 0 0 10px; letter-spacing: -.6px; }
-    .cta-band p { color: #b9b7ae; margin: 0 0 26px; font-size: 14.5px; }
+    .cta-band h2 { font-size: clamp(26px, 4vw, 34px); font-weight: 700; margin: 0 0 12px; letter-spacing: -.8px; }
+    .cta-band p { color: #ACACAC; margin: 0 0 28px; font-size: 15px; }
+    .cta-band .btn-pill { border-color: var(--lime); }
+    .cta-band .btn-pill.filled { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+    .cta-band .btn-pill.filled:hover { background: #cbe14e; }
 
-    footer {
-      text-align: center; padding: 36px 22px 48px; color: var(--muted); font-size: 12px;
-      position: relative; z-index: 1;
+    footer.site {
+      text-align: center; padding: 40px 24px 52px; color: var(--muted2); font-size: 12.5px;
     }
 
     @media (max-width: 760px) {
-      .hero { flex-direction: column; text-align: left; padding-top: 40px; }
-      .hero-text h1 { font-size: 36px; }
+      .header-links { display: none; }
       .grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      nav { padding: 10px 14px; }
+      .hero-data .pipe { margin-left: 0; }
     }
   </style>
 </head>
 <body>
-  <div class="nav-wrap">
-    <nav>
-      <div class="logo"><span class="dot"></span>Verifai</div>
-      <div class="nav-links">
-        <a href="#usecases">Use cases</a>
-        <a href="#how">How it works</a>
-        <a href="#stack">Tech</a>
-      </div>
-      <a class="nav-cta" href="/app">Launch App →</a>
-    </nav>
-  </div>
+  <header class="site">
+    <div class="logo"><span class="mark">V</span>Verifai</div>
+    <div class="header-links">
+      <a href="#usecases">Use cases</a>
+      <a href="#how">How it works</a>
+      <a href="#stack">Tech</a>
+    </div>
+    <a class="btn-pill filled" href="/app">Launch App →</a>
+  </header>
 
   <div class="hero">
-    <div class="hero-text">
-      <div class="eyebrow-row">
-        <div class="eyebrow-tag"><b>●</b> Soulbound NFT · Sepolia Testnet</div>
-      </div>
-      <h1>Meet the<br><span class="hl">Proof-of-Human</span><br>Infrastructure</h1>
-      <p class="sub">Verifai scans a face, finds a real matching post on the web, and mints an unforgeable, non-transferable badge on-chain — a portable "I'm real" credential any platform can check in one call.</p>
-      <div class="hero-ctas">
-        <a class="btn-primary" href="/app">Launch App →</a>
-        <a class="btn-secondary" href="#usecases">See use cases</a>
-      </div>
+    <div class="kicker"><span class="kdot"></span>Soulbound NFT · Sepolia Testnet</div>
+    <h1>
+      <span class="row">Meet the</span>
+      <span class="row accent">Proof-of-Human</span>
+      <span class="row">Infrastructure</span>
+    </h1>
+    <p class="sub">Verifai scans a face, finds a real matching post on the web, and mints an unforgeable, non-transferable badge on-chain — a portable "I'm real" credential any platform can check.</p>
+    <div class="hero-ctas">
+      <a class="btn-pill filled btn-lg" href="/app">Launch App →</a>
+      <a class="btn-pill btn-lg" href="#usecases">See use cases</a>
     </div>
 
-    <div class="hero-visual">
-      <div class="schematic brackets">
-        <span class="bl"></span><span class="br"></span>
-        <div class="cap">IDENTITY VERIFICATION<br>CONFIDENCE RADIUS</div>
-        <div class="radar">
-          <div class="ring ring1"></div>
-          <div class="ring ring2"></div>
-          <div class="ring ring3"></div>
-          <div class="ring ring4"></div>
-          <div class="radar-dot d1"></div>
-          <div class="radar-dot d2"></div>
-          <div class="radar-center">1</div>
-        </div>
-        <div class="readout">
-          <span>Token <b class="mono">#042</b></span>
-          <span>Status <b style="color:var(--ok)">✓ Verified</b></span>
-        </div>
+    <div class="hero-data">
+      <div class="rot-badge">
+        <svg viewBox="0 0 100 100">
+          <defs><path id="circlePath" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs>
+          <text><textPath href="#circlePath">VERIFY · MINT · REPEAT · VERIFY · MINT · REPEAT · </textPath></text>
+        </svg>
+        <div class="center-dot">✓</div>
+      </div>
+      <p>From face scan to on-chain badge, fully automated — no manual review, no hardcoded results.</p>
+      <div class="pipe">
+        <div class="pipe-chip"><b>1</b>Face scan</div>
+        <div class="pipe-chip"><b>2</b>Web match</div>
+        <div class="pipe-chip"><b>3</b>Soulbound mint</div>
       </div>
     </div>
   </div>
@@ -382,11 +336,11 @@
     <div class="cta-band reveal">
       <h2>Try it yourself</h2>
       <p>Connect MetaMask, upload a photo, watch your badge get minted live.</p>
-      <a class="btn-primary" href="/app">Launch App →</a>
+      <a class="btn-pill filled btn-lg" href="/app">Launch App →</a>
     </div>
   </div>
 
-  <footer class="mono">
+  <footer class="site mono">
     VERIFAI · HH GOA 2026 · FACE IDENTIFICATION &amp; BLOCKCHAIN VERIFICATION<br>
     NON-TRANSFERABLE BADGE · MINTED ONCE PER WALLET · SEPOLIA TESTNET
   </footer>
