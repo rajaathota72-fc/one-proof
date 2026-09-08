@@ -57,7 +57,10 @@ def mint_badge(face_hash_hex: str, post_url: str, post_content: str, recipient: 
     })
 
     signed = account.sign_transaction(tx)
-    tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
+    # web3.py v6 exposes this as rawTransaction; newer releases use
+    # raw_transaction. Support both so the deployed mint path is stable.
+    raw_transaction = getattr(signed, "raw_transaction", None) or signed.rawTransaction
+    tx_hash = w3.eth.send_raw_transaction(raw_transaction)
     # A pending testnet transaction must never leave the web request open
     # indefinitely. The caller receives a clear retryable error after 75 s.
     receipt = w3.eth.wait_for_transaction_receipt(tx_hash, timeout=75, poll_latency=2)
