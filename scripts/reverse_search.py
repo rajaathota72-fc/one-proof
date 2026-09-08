@@ -42,30 +42,33 @@ def search_image(image_path: str, image_url: str | None = None) -> list[dict]:
 
     image_url = image_url or os.environ.get("IMAGE_PUBLIC_URL") or upload_temp_public(image_path)
 
-    params = {
-        "engine": "google_lens",
-        "url": image_url,
-        "api_key": api_key,
-    }
-    resp = requests.get(SERPAPI_ENDPOINT, params=params, timeout=30)
-    resp.raise_for_status()
-    data = resp.json()
-
-    matches = []
-    seen_urls = set()
-    # Lens can return an exact match separately from visually similar results.
-    for group in ("exact_matches", "visual_matches"):
-        for match in data.get(group, []):
+    def fetch_matches(match_type: str, result_group: str) -> list[dict]:
+        resp = requests.get(
+            SERPAPI_ENDPOINT,
+            params={
+                "engine": "google_lens",
+                "url": image_url,
+                "type": match_type,
+                "api_key": api_key,
+            },
+            timeout=30,
+        )
+        resp.raise_for_status()
+        results = []
+        for match in resp.json().get(result_group, []):
             url = match.get("link")
-            if not url or url in seen_urls:
-                continue
-            seen_urls.add(url)
-            matches.append({
-                "url": url,
-                "title": match.get("title"),
-                "snippet": match.get("source"),
-            })
-    return matches
+            if url:
+                results.append({
+                    "url": url,
+                    "title": match.get("title"),
+                    "snippet": match.get("source"),
+                })
+        return results
+
+    # Visual search is fast for similar images. If it returns nothing, query
+    # the dedicated Exact Matches tab, where public profile references appear.
+    matches = fetch_matches("visual_matches", "visual_matches")
+    return matches or fetch_matches("exact_matches", "exact_matches")
 
 
 if __name__ == "__main__":
