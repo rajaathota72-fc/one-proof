@@ -299,6 +299,11 @@
       object-fit: cover;
       display: block;
     }
+    .nft-reference {
+      position:absolute; top:10px; left:10px; z-index:1;
+      padding:5px 7px; background:rgba(17,19,18,.84); color:var(--lime);
+      font:500 9px "DM Mono",monospace; letter-spacing:.08em;
+    }
     .nft-ribbon {
       position: absolute; top: 10px; right: -26px;
       background: var(--accent);
@@ -453,8 +458,8 @@
           <span>Minting to</span>
           <span class="addr" id="connectedAddr"></span>
         </div>
-        <div class="wallet-validation" aria-label="Validated wallet details">
-          <div class="wallet-validation-head"><b>✓</b> Wallet connection validated</div>
+        <div class="wallet-validation" aria-label="Wallet minting details">
+          <div class="wallet-validation-head"><b>✓</b> Wallet ready to receive badge</div>
           <div class="wallet-validation-grid">
             <div class="wallet-validation-item">
               <span class="wallet-validation-label">Recipient</span>
@@ -501,6 +506,7 @@
               <div class="nft-inner">
                 <div class="nft-art">
                   <img id="resultImg" alt="scanned face">
+                  <div class="nft-reference">REFERENCE PORTRAIT</div>
                   <div class="nft-ribbon">SOULBOUND</div>
                   <div class="nft-chain"><span class="cdot"></span>Sepolia</div>
                 </div>
@@ -515,17 +521,17 @@
             <div class="result-meta">
               <div class="receipt-kicker">VERIFICATION RECEIPT</div>
               <h2 class="receipt-title">Your human signal is live.</h2>
-              <p class="receipt-copy">The badge is now linked to your wallet and can be independently checked without exposing the original photo.</p>
+              <p class="receipt-copy">The submitted portrait is referenced by its cryptographic face hash. The matched post and badge record can now be independently checked.</p>
               <div class="details">
                 <div class="detail">
                   <div class="label">
-                    Face hash (SHA-256)
+                    Portrait reference hash (SHA-256)
                     <button class="copy-btn" onclick="copyText('faceHash')">copy</button>
                   </div>
                   <div class="value mono" id="faceHash"></div>
                 </div>
                 <div class="detail">
-                  <div class="label">Matching post found</div>
+                  <div class="label">Matched public-web reference</div>
                   <div class="value"><a id="matchLink" target="_blank"></a></div>
                 </div>
                 <div class="detail">
