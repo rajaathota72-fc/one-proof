@@ -28,6 +28,24 @@ def get_contract(w3: Web3):
     return w3.eth.contract(address=Web3.to_checksum_address(contract_address), abi=abi)
 
 
+def existing_badge_token(recipient: str = None):
+    """Return an existing proof token for a wallet, if it has one."""
+    w3 = get_web3()
+    contract = get_contract(w3)
+    if recipient:
+        address = Web3.to_checksum_address(recipient)
+    else:
+        address = w3.eth.account.from_key(os.environ["PRIVATE_KEY"]).address
+
+    if not contract.functions.hasBadge(address).call():
+        return None
+
+    for token_id in range(contract.functions.nextTokenId().call()):
+        if contract.functions.ownerOf(token_id).call() == address:
+            return token_id
+    return None
+
+
 def sha256_hex(data: str) -> str:
     return hashlib.sha256(data.encode()).hexdigest()
 
@@ -42,6 +60,8 @@ def mint_badge(face_hash_hex: str, post_url: str, post_content: str, recipient: 
 
     account = w3.eth.account.from_key(os.environ["PRIVATE_KEY"])
     to_address = Web3.to_checksum_address(recipient) if recipient else account.address
+    if contract.functions.hasBadge(to_address).call():
+        raise ValueError("This wallet already has a non-transferable proof.")
     post_hash_hex = sha256_hex(post_url + post_content)
 
     tx = contract.functions.mint(

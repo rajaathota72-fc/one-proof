@@ -65,7 +65,13 @@ def api_verify():
     try:
         from scripts.face_id import encode_face, face_hash
         from scripts.reverse_search import search_image
-        from scripts.blockchain_verify import mint_badge, reverify, get_web3
+        from scripts.blockchain_verify import existing_badge_token, mint_badge, reverify, get_web3
+
+        existing_token = existing_badge_token(connected_wallet)
+        if existing_token is not None:
+            return jsonify({
+                "error": f"This wallet already has non-transferable proof #{existing_token}. Connect a different wallet to create another proof."
+            }), 409
 
         encoding = encode_face(image_path)
         fhash = face_hash(encoding)
