@@ -184,6 +184,14 @@
       color:#cbd1c8;
     }
     .connected-strip .addr { color:var(--lime); font-family:"DM Mono",monospace; }
+    .wallet-validation { margin:0 0 16px; border:1px solid var(--line); background:var(--paper); }
+    .wallet-validation-head { display:flex; align-items:center; gap:9px; padding:12px 14px; border-bottom:1px solid var(--line); color:var(--ink); font:600 12px "Space Grotesk",sans-serif; }
+    .wallet-validation-head b { width:18px; height:18px; display:grid; place-items:center; background:var(--lime); color:var(--ink); font:700 10px "DM Mono",monospace; }
+    .wallet-validation-grid { display:grid; grid-template-columns:repeat(3,1fr); }
+    .wallet-validation-item { padding:12px 14px; border-right:1px solid var(--line); }
+    .wallet-validation-item:last-child { border-right:0; }
+    .wallet-validation-label { display:block; margin-bottom:5px; color:var(--muted); font:10px "DM Mono",monospace; letter-spacing:.06em; text-transform:uppercase; }
+    .wallet-validation-value { display:block; color:var(--ink); font-size:11px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
     button.primary {
       width: 100%;
@@ -399,6 +407,9 @@
       header h1 { font-size:42px; }
       .card { padding:24px 18px; }
       .result-layout { grid-template-columns:1fr; }
+      .wallet-validation-grid { grid-template-columns:1fr; }
+      .wallet-validation-item { border-right:0; border-bottom:1px solid var(--line); }
+      .wallet-validation-item:last-child { border-bottom:0; }
       footer { margin-top:44px; flex-direction:column; gap:10px; }
     }
   </style>
@@ -441,6 +452,23 @@
         <div class="connected-strip">
           <span>Minting to</span>
           <span class="addr" id="connectedAddr"></span>
+        </div>
+        <div class="wallet-validation" aria-label="Validated wallet details">
+          <div class="wallet-validation-head"><b>✓</b> Wallet connection validated</div>
+          <div class="wallet-validation-grid">
+            <div class="wallet-validation-item">
+              <span class="wallet-validation-label">Recipient</span>
+              <span class="wallet-validation-value mono" id="connectedAddrFull"></span>
+            </div>
+            <div class="wallet-validation-item">
+              <span class="wallet-validation-label">Network</span>
+              <span class="wallet-validation-value">Sepolia testnet</span>
+            </div>
+            <div class="wallet-validation-item">
+              <span class="wallet-validation-label">Credential</span>
+              <span class="wallet-validation-value">Non-transferable badge</span>
+            </div>
+          </div>
         </div>
 
         <form id="form">
@@ -529,6 +557,7 @@
     const appBody = document.getElementById('appBody');
     const connectBtn = document.getElementById('connectBtn');
     const connectedAddr = document.getElementById('connectedAddr');
+    const connectedAddrFull = document.getElementById('connectedAddrFull');
 
     function short(addr) { return addr ? addr.slice(0, 6) + '…' + addr.slice(-4) : ''; }
 
@@ -548,6 +577,7 @@
       walletGate.style.display = 'none';
       appBody.style.display = 'block';
       connectedAddr.textContent = short(address);
+      connectedAddrFull.textContent = address;
     }
 
     async function connectWallet() {
