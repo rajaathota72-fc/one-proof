@@ -1,0 +1,5 @@
+.claude/
+.idea/
+sample_images/
+venv/
+__pycache__/
