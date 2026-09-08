@@ -3,8 +3,10 @@ Run: python app.py, then open http://127.0.0.1:5000
 """
 import os
 import traceback
+from uuid import uuid4
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
+from werkzeug.utils import secure_filename
 
 load_dotenv()
 
@@ -12,6 +14,30 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "static", "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+
+def upload_to_s3(image_path: str, content_type: str | None) -> str | None:
+    """Return a 10-minute S3 URL when an upload bucket is configured."""
+    bucket = os.environ.get("S3_BUCKET")
+    if not bucket:
+        return None
+
+    import boto3
+
+    prefix = os.environ.get("S3_PREFIX", "oneproof/uploads").strip("/")
+    key = f"{prefix}/{os.path.basename(image_path)}"
+    client = boto3.client("s3", region_name=os.environ.get("AWS_REGION"))
+    client.upload_file(
+        image_path,
+        bucket,
+        key,
+        ExtraArgs={"ContentType": content_type or "application/octet-stream"},
+    )
+    return client.generate_presigned_url(
+        "get_object",
+        Params={"Bucket": bucket, "Key": key},
+        ExpiresIn=600,
+    )
 
 
 @app.route("/")
@@ -30,7 +56,8 @@ def api_verify():
     if not file or file.filename == "":
         return jsonify({"error": "Pick an image first."}), 400
 
-    image_path = os.path.join(UPLOAD_DIR, file.filename)
+    filename = f"{uuid4().hex}-{secure_filename(file.filename)}"
+    image_path = os.path.join(UPLOAD_DIR, filename)
     file.save(image_path)
     connected_wallet = request.form.get("wallet_address") or None
 
@@ -42,7 +69,8 @@ def api_verify():
         encoding = encode_face(image_path)
         fhash = face_hash(encoding)
 
-        matches = search_image(image_path)
+        s3_image_url = upload_to_s3(image_path, file.mimetype)
+        matches = search_image(image_path, image_url=s3_image_url)
         if not matches:
             return jsonify({"error": "No matching post found on the web for this face."}), 404
         top = matches[0]
@@ -56,7 +84,7 @@ def api_verify():
         contract_address = os.environ.get("CONTRACT_ADDRESS", "")
 
         return jsonify({
-            "image_url": f"/static/uploads/{file.filename}",
+            "image_url": s3_image_url or f"/static/uploads/{filename}",
             "face_hash": fhash,
             "match_url": top["url"],
             "match_title": top["title"],

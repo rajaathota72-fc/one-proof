@@ -35,12 +35,12 @@ def upload_temp_public(image_path: str) -> str:
     return url
 
 
-def search_image(image_path: str) -> list[dict]:
+def search_image(image_path: str, image_url: str | None = None) -> list[dict]:
     api_key = os.environ.get("SERPAPI_KEY")
     if not api_key:
         raise EnvironmentError("Set SERPAPI_KEY env var (get one at serpapi.com)")
 
-    image_url = os.environ.get("IMAGE_PUBLIC_URL") or upload_temp_public(image_path)
+    image_url = image_url or os.environ.get("IMAGE_PUBLIC_URL") or upload_temp_public(image_path)
 
     params = {
         "engine": "google_lens",

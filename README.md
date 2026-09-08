@@ -37,19 +37,24 @@ Create a `.env` with:
 ```text
 SERPAPI_KEY=
 IMAGE_PUBLIC_URL=
+AWS_REGION=ap-south-1
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+S3_BUCKET=oneproof
+S3_PREFIX=oneproof/uploads
 RPC_URL=
 PRIVATE_KEY=
 CONTRACT_ADDRESS=
 ```
 
-Use a Sepolia RPC and a funded signer wallet for testnet mints. Long-running requests time out and return a retryable error.
+Use a Sepolia RPC and a funded signer wallet for testnet mints. Long-running requests time out and return a retryable error. When S3_BUCKET is set, OneProof stores each upload in the private S3 bucket and gives SerpApi a 10-minute pre-signed URL.
 
 ## Deploy to Heroku
 
 The repository includes a Procfile and runtime configuration.
 
     heroku create your-oneproof-app
-    heroku config:set SERPAPI_KEY=... IMAGE_PUBLIC_URL=... RPC_URL=... PRIVATE_KEY=... CONTRACT_ADDRESS=...
+    heroku config:set SERPAPI_KEY=... AWS_REGION=ap-south-1 AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=... S3_BUCKET=oneproof RPC_URL=... PRIVATE_KEY=... CONTRACT_ADDRESS=...
     git push heroku master
 
-Use a public URL for IMAGE_PUBLIC_URL. Uploaded images are stored on Heroku's ephemeral filesystem, so they are not retained after a dyno restart.
+Leave IMAGE_PUBLIC_URL blank when S3 is configured. The bucket stays private; only a short-lived pre-signed image URL is shared with SerpApi for the lookup. Local temporary files on Heroku remain ephemeral.
