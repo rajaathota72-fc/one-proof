@@ -52,12 +52,19 @@ def search_image(image_path: str, image_url: str | None = None) -> list[dict]:
     data = resp.json()
 
     matches = []
-    for visual_match in data.get("visual_matches", []):
-        matches.append({
-            "url": visual_match.get("link"),
-            "title": visual_match.get("title"),
-            "snippet": visual_match.get("source"),
-        })
+    seen_urls = set()
+    # Lens can return an exact match separately from visually similar results.
+    for group in ("exact_matches", "visual_matches"):
+        for match in data.get(group, []):
+            url = match.get("link")
+            if not url or url in seen_urls:
+                continue
+            seen_urls.add(url)
+            matches.append({
+                "url": url,
+                "title": match.get("title"),
+                "snippet": match.get("source"),
+            })
     return matches
 
 

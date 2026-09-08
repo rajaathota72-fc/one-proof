@@ -72,7 +72,9 @@ def api_verify():
         s3_image_url = upload_to_s3(image_path, file.mimetype)
         matches = search_image(image_path, image_url=s3_image_url)
         if not matches:
-            return jsonify({"error": "No matching post found on the web for this face."}), 404
+            return jsonify({
+                "error": "No public reference was found for this portrait. Try a photo that already appears on a public profile or website."
+            }), 404
         top = matches[0]
         post_content = f"{top['title']} | {top['snippet']}"
 
