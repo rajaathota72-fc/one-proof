@@ -3,6 +3,7 @@ Run: python app.py, then open http://127.0.0.1:5000
 """
 import os
 import traceback
+from typing import Optional
 from uuid import uuid4
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
@@ -16,7 +17,7 @@ UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "static", "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-def upload_to_s3(image_path: str, content_type: str | None) -> str | None:
+def upload_to_s3(image_path: str, content_type: Optional[str]) -> Optional[str]:
     """Return a 10-minute S3 URL when an upload bucket is configured."""
     bucket = os.environ.get("S3_BUCKET")
     if not bucket:
@@ -69,14 +70,23 @@ def api_verify():
         encoding = encode_face(image_path)
         fhash = face_hash(encoding)
 
-        s3_image_url = upload_to_s3(image_path, file.mimetype)
-        matches = search_image(image_path, image_url=s3_image_url)
+        # Lens receives a short-lived SerpApi image ID generated from the local
+        # upload. Reverse matching must not depend on S3/public URL access.
+        matches = search_image(image_path)
         if not matches:
             return jsonify({
                 "error": "No public reference was found for this portrait. Try a photo that already appears on a public profile or website."
             }), 404
         top = matches[0]
         post_content = f"{top['title']} | {top['snippet']}"
+
+        # S3 only preserves the result preview after a successful match. A
+        # storage issue should not make a valid visual search look like a miss.
+        try:
+            s3_image_url = upload_to_s3(image_path, file.mimetype)
+        except Exception:
+            traceback.print_exc()
+            s3_image_url = None
 
         token_id = mint_badge(fhash, top["url"], post_content, recipient=connected_wallet)
         verified = reverify(token_id, fhash, top["url"], post_content)
@@ -103,4 +113,4 @@ def api_verify():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
