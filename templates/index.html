@@ -424,13 +424,13 @@
       <header>
         <div class="app-kicker">ONEPROOF / VERIFICATION</div>
         <h1>Your proof,<br>on your terms.</h1>
-        <p>Turn a real-world signal into a portable, non-transferable proof-of-human badge.</p>
+        <p>Turn a real-world signal into a portable, non-transferable proof-of-human credential.</p>
         <div class="pipeline-tags">
           <div class="ptag"><b>01</b> Face scan</div>
           <div class="ptag"><b>02</b> Web match</div>
           <div class="ptag"><b>03</b> Soulbound mint</div>
         </div>
-        <p class="app-note">Your wallet receives the badge. OneProof only creates the proof needed for it to be independently checked.</p>
+        <p class="app-note">Your wallet receives the proof. OneProof only creates what can be independently checked.</p>
       </header>
 
       <div class="card">
@@ -438,7 +438,7 @@
 
       <div class="wallet-gate" id="walletGate">
         <div class="gate-mark">M</div>
-        <div>Connect your MetaMask wallet — your Proof-of-Human badge<br>will be minted directly to your own address.</div>
+        <div>Connect your MetaMask wallet — your Proof-of-Human credential<br>will be created directly for your own address.</div>
         <button id="connectBtn">Connect MetaMask</button>
       </div>
 
@@ -447,7 +447,7 @@
           <div class="wallet-validation-head"><b>✓</b> Ready to verify your portrait</div>
           <div class="wallet-validation-grid">
             <div class="wallet-validation-item">
-              <span class="wallet-validation-label">Badge recipient</span>
+              <span class="wallet-validation-label">Proof recipient</span>
               <span class="wallet-validation-value mono" id="connectedAddrFull"></span>
             </div>
             <div class="wallet-validation-item">
@@ -456,7 +456,7 @@
             </div>
             <div class="wallet-validation-item">
               <span class="wallet-validation-label">Proof type</span>
-              <span class="wallet-validation-value">Non-transferable badge</span>
+              <span class="wallet-validation-value">Non-transferable proof</span>
             </div>
           </div>
         </div>
@@ -471,14 +471,14 @@
             <input type="file" name="image" id="image" accept="image/*" required>
           </label>
           <button type="submit" class="primary" id="btn">
-            <span id="btnLabel">Verify portrait &amp; mint badge ↗</span>
+            <span id="btnLabel">Verify portrait &amp; create proof ↗</span>
           </button>
         </form>
 
         <div id="progress">
           <div class="p-step" id="p1"><div class="p-icon">1</div><div>Detecting &amp; encoding face…</div></div>
           <div class="p-step" id="p2"><div class="p-icon">2</div><div>Searching the web for a matching post…</div></div>
-          <div class="p-step" id="p3"><div class="p-icon">3</div><div>Minting soulbound badge on Sepolia…</div></div>
+          <div class="p-step" id="p3"><div class="p-icon">3</div><div>Creating soulbound proof on Sepolia…</div></div>
         </div>
 
         <div class="error" id="error"></div>
@@ -506,7 +506,7 @@
             <div class="result-meta">
               <div class="receipt-kicker">VERIFICATION RECEIPT</div>
               <h2 class="receipt-title">Your human signal is live.</h2>
-              <p class="receipt-copy">The submitted portrait is referenced by its cryptographic face hash. The matched post and badge record can now be independently checked.</p>
+              <p class="receipt-copy">The submitted portrait is referenced by its cryptographic face hash. The matched post and proof record can now be independently checked.</p>
               <div class="details">
                 <div class="detail">
                   <div class="label">
@@ -532,7 +532,7 @@
       </div>
     </div>
 
-    <footer><span>© 2026 ONEPROOF</span><span>NON-TRANSFERABLE BADGE · SEPOLIA TESTNET</span></footer>
+    <footer><span>© 2026 ONEPROOF</span><span>NON-TRANSFERABLE PROOF · SEPOLIA TESTNET</span></footer>
   </div>
 
   <div id="toast"></div>
@@ -601,7 +601,7 @@
         }
 
         setConnected(accounts[0]);
-        showToast('Wallet connected — badge will mint to ' + short(accounts[0]));
+        showToast('Wallet connected — proof will be created for ' + short(accounts[0]));
       } catch (err) {
         showToast(err.message || 'Connection rejected');
       }
@@ -717,7 +717,7 @@
           if (data.etherscan_url) { eth.href = data.etherscan_url; eth.parentElement.parentElement.style.display = 'block'; }
           else { eth.parentElement.parentElement.style.display = 'none'; }
           resultBox.style.display = 'block';
-          showToast('Badge #' + data.token_id + ' minted');
+          showToast('Proof #' + data.token_id + ' created');
         }, 500);
 
       } catch (err) {
@@ -725,7 +725,7 @@
         progress.style.display = 'none';
         form.style.display = 'block';
         btn.disabled = false;
-        btnLabel.textContent = 'Verify portrait & mint badge ↗';
+        btnLabel.textContent = 'Verify portrait & create proof ↗';
         errorBox.textContent = err.name === 'AbortError'
           ? 'Verification timed out after 90 seconds. Check your Sepolia RPC and try again.'
           : err.message;
@@ -741,7 +741,7 @@
       dropText.textContent = 'Drop a clear portrait';
       filename.textContent = '';
       btn.disabled = false;
-      btnLabel.textContent = 'Verify portrait & mint badge ↗';
+      btnLabel.textContent = 'Verify portrait & create proof ↗';
     });
   </script>
 </body>
