@@ -57,4 +57,4 @@ The repository includes a Procfile and runtime configuration.
     heroku config:set SERPAPI_KEY=... AWS_REGION=ap-south-1 AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=... S3_BUCKET=oneproof RPC_URL=... PRIVATE_KEY=... CONTRACT_ADDRESS=...
     git push heroku master
 
-`IMAGE_PUBLIC_URL` is no longer needed for reverse search. OneProof sends the portrait directly to SerpApi's temporary Image API and uses its short-lived image ID for Google Lens. When configured, S3 is only used to preserve the result preview after a successful match. Local temporary files on Heroku remain ephemeral.
+Leave `IMAGE_PUBLIC_URL` blank. In production, OneProof uploads to the private S3 bucket and shares only a 10-minute pre-signed URL with SerpApi for the Lens lookup. Local temporary files on Heroku remain ephemeral.

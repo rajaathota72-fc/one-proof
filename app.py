@@ -70,23 +70,16 @@ def api_verify():
         encoding = encode_face(image_path)
         fhash = face_hash(encoding)
 
-        # Lens receives a short-lived SerpApi image ID generated from the local
-        # upload. Reverse matching must not depend on S3/public URL access.
-        matches = search_image(image_path)
+        # The S3 object stays private. Lens receives only this 10-minute
+        # pre-signed URL, which restores the prior URL-based match behavior.
+        s3_image_url = upload_to_s3(image_path, file.mimetype)
+        matches = search_image(s3_image_url)
         if not matches:
             return jsonify({
                 "error": "No public reference was found for this portrait. Try a photo that already appears on a public profile or website."
             }), 404
         top = matches[0]
         post_content = f"{top['title']} | {top['snippet']}"
-
-        # S3 only preserves the result preview after a successful match. A
-        # storage issue should not make a valid visual search look like a miss.
-        try:
-            s3_image_url = upload_to_s3(image_path, file.mimetype)
-        except Exception:
-            traceback.print_exc()
-            s3_image_url = None
 
         token_id = mint_badge(fhash, top["url"], post_content, recipient=connected_wallet)
         verified = reverify(token_id, fhash, top["url"], post_content)
