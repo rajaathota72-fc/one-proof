@@ -173,17 +173,6 @@
       border: 1px solid var(--line);
     }
 
-    .connected-strip {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 14px;
-      padding:12px 14px;
-      background:var(--ink);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      font-size: 12px;
-      color:#cbd1c8;
-    }
-    .connected-strip .addr { color:var(--lime); font-family:"DM Mono",monospace; }
     .wallet-validation { margin:0 0 16px; border:1px solid var(--line); background:var(--paper); }
     .wallet-validation-head { display:flex; align-items:center; gap:9px; padding:12px 14px; border-bottom:1px solid var(--line); color:var(--ink); font:600 12px "Space Grotesk",sans-serif; }
     .wallet-validation-head b { width:18px; height:18px; display:grid; place-items:center; background:var(--lime); color:var(--ink); font:700 10px "DM Mono",monospace; }
@@ -402,7 +391,7 @@
     .app-note { margin-top:42px; padding-top:20px; border-top:1px solid var(--line); font-size:12px; line-height:1.6; color:var(--muted); max-width:360px; }
     /* OneProof uses square surfaces for actions and panels; pills are reserved for
        small statuses and tags. */
-    .drop,.connected-strip,button.primary,button.ghost,.p-step,.detail,
+    .drop,button.primary,button.ghost,.p-step,.detail,
     .nft-card,.nft-info,#toast { border-radius:4px; }
     @media (max-width:760px) {
       .nav-wrap,.wrap { padding-left:20px; padding-right:20px; }
@@ -454,15 +443,11 @@
       </div>
 
       <div id="appBody" style="display:none;">
-        <div class="connected-strip">
-          <span>Minting to</span>
-          <span class="addr" id="connectedAddr"></span>
-        </div>
         <div class="wallet-validation" aria-label="Wallet minting details">
-          <div class="wallet-validation-head"><b>✓</b> Wallet ready to receive badge</div>
+          <div class="wallet-validation-head"><b>✓</b> Ready to verify your portrait</div>
           <div class="wallet-validation-grid">
             <div class="wallet-validation-item">
-              <span class="wallet-validation-label">Recipient</span>
+              <span class="wallet-validation-label">Badge recipient</span>
               <span class="wallet-validation-value mono" id="connectedAddrFull"></span>
             </div>
             <div class="wallet-validation-item">
@@ -470,7 +455,7 @@
               <span class="wallet-validation-value">Sepolia testnet</span>
             </div>
             <div class="wallet-validation-item">
-              <span class="wallet-validation-label">Credential</span>
+              <span class="wallet-validation-label">Proof type</span>
               <span class="wallet-validation-value">Non-transferable badge</span>
             </div>
           </div>
@@ -562,7 +547,6 @@
     const walletGate = document.getElementById('walletGate');
     const appBody = document.getElementById('appBody');
     const connectBtn = document.getElementById('connectBtn');
-    const connectedAddr = document.getElementById('connectedAddr');
     const connectedAddrFull = document.getElementById('connectedAddrFull');
 
     function short(addr) { return addr ? addr.slice(0, 6) + '…' + addr.slice(-4) : ''; }
@@ -582,7 +566,6 @@
       walletBtn.classList.add('connected');
       walletGate.style.display = 'none';
       appBody.style.display = 'block';
-      connectedAddr.textContent = short(address);
       connectedAddrFull.textContent = address;
     }
 
